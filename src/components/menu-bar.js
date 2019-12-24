@@ -16,7 +16,7 @@ function MenuBar() {
                 <Nav.Link href="/">Home</Nav.Link>
                 { user ? (
                     <Fragment>
-                        <Nav.Link href="/selections">Наборы</Nav.Link>
+                        <Nav.Link href="/sets">Наборы</Nav.Link>
                         <Nav.Link href="/profile/add">Профили</Nav.Link>
                         <Nav.Link onClick={logout}>Выйти</Nav.Link>
                     </Fragment>
@@ -26,7 +26,7 @@ function MenuBar() {
                         <Nav.Link href="/signup">Регистрация</Nav.Link>
                     </Fragment>
                 )}
-            
+
             </Nav>
         </Navbar>
     );

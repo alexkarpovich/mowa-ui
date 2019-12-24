@@ -5,16 +5,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components';
 
-import { ACCOUNT_SELECTIONS_QUERY, ADD_ACCOUNT_SELECTION } from '../graphql/account';
-import SelectionView from '../components/selection/selection-view';
-import SelectionNavItem from '../components/selection/selection-nav-item';
+import { SETS_QUERY, ADD_SET } from '../graphql/account';
+import SetView from '../components/set/set-view';
+import SetNavItem from '../components/set/set-nav-item';
 
-const SelectionSpan = styled.span`
+const SetSpan = styled.span`
     font-weight: bold;
     text-transform: uppercase;
 `;
 
-const AddSelectionBtn = styled.span`
+const AddSetBtn = styled.span`
     padding: 3px 5px;
 
     &:hover {
@@ -22,15 +22,15 @@ const AddSelectionBtn = styled.span`
     }
 `;
 
-function SelectionsPage() {
+function SetsPage() {
     const [activeItem, setActiveItem] = useState('');
-    const { loading, data } = useQuery(ACCOUNT_SELECTIONS_QUERY);
-    const [addAccountSelection] = useMutation(ADD_ACCOUNT_SELECTION, {
+    const { loading, data } = useQuery(SETS_QUERY);
+    const [addSet] = useMutation(ADD_SET, {
         variables: { name: 'Безымянный набор' },
         update(proxy, { data: res }) {
-            const root = proxy.readQuery({ query: ACCOUNT_SELECTIONS_QUERY });
-            root.accountSelections = [res.addAccountSelection, ...root.accountSelections];
-            proxy.writeData({ query: ACCOUNT_SELECTIONS_QUERY, data: root });
+            const root = proxy.readQuery({ query: SETS_QUERY });
+            root.sets = [res.addSet, ...root.sets];
+            proxy.writeData({ query: SETS_QUERY, data: root });
         }
     });
 
@@ -49,43 +49,43 @@ function SelectionsPage() {
                     <Col sm={3}>
                         <Row>
                             <Col>
-                                <SelectionSpan>Наборы</SelectionSpan>
-                                <AddSelectionBtn>
-                                    <FontAwesomeIcon icon={faPlusCircle} onClick={addAccountSelection}/>
-                                </AddSelectionBtn>
+                                <SetSpan>Наборы</SetSpan>
+                                <AddSetBtn>
+                                    <FontAwesomeIcon icon={faPlusCircle} onClick={addSet}/>
+                                </AddSetBtn>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
                                 <ListGroup activeKey={activeItem} onSelect={key => setActiveItem(key)}>
-                                { 
-                                    data.accountSelections.map((item) => (
-                                        <SelectionNavItem 
+                                {
+                                    data.sets.map((item) => (
+                                        <SetNavItem
                                             key={item.id}
                                             item={item}
                                             onClick={() => pickSelection(item.id)}
                                         />
-                                    )) 
-                                }                                       
+                                    ))
+                                }
                                 </ListGroup>
                             </Col>
                         </Row>
-                        
+
                     </Col>
                     <Col sm={9}>
                         { activeItem ? (
-                            <SelectionView id={activeItem} />
+                            <SetView id={activeItem} />
                         ) : (
                             <div>
                                 Выберите набор.
-                            </div>  
+                            </div>
                         ) }
                     </Col>
-                </Row>                
+                </Row>
             ) }
-            
-        </div>        
+
+        </div>
     );
 }
 
-export default SelectionsPage;
+export default SetsPage;

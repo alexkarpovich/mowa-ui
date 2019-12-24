@@ -17,15 +17,14 @@ function CreateProfilePage() {
             ) : (
                 <CreateProfileForm languages={data.languages} />
             ) }
-            
-        </div>        
+
+        </div>
     );
 }
 
 const LANGUAGES_QUERY = gql`
-{    
+{
     languages {
-        id
         name
         code
     }

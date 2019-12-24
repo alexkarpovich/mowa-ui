@@ -10,7 +10,6 @@ import { useForm } from '../util/hooks';
 function SignupPage(props) {
     const context = useContext(AuthContext);
     const { onChange, onSubmit, values } = useForm(signupUser, {
-        username: '',
         email: '',
         password: '',
         confirmPassword: ''
@@ -19,7 +18,7 @@ function SignupPage(props) {
     const [signup] = useMutation(SIGNUP, {
         update(_, { data: { signup: userData } }) {
             context.login(userData);
-            props.history.push('/'); 
+            props.history.push('/');
         },
         variables: {
             input: values
@@ -29,22 +28,13 @@ function SignupPage(props) {
     function signupUser() {
         signup();
     }
-    
+
     return (
         <Form onSubmit={onSubmit}>
-            <Form.Group controlId="signup-username">
-                <Form.Label>Ник</Form.Label>
-                <Form.Control 
-                    type='text' 
-                    name='username'
-                    placeholder='Введите ваш ник...'
-                    onChange={onChange}
-                />
-            </Form.Group>
             <Form.Group controlId="signup-email">
                 <Form.Label>Email</Form.Label>
-                <Form.Control 
-                    type='email' 
+                <Form.Control
+                    type='email'
                     name='email'
                     placeholder='Введите ваш email...'
                     onChange={onChange}
@@ -53,7 +43,7 @@ function SignupPage(props) {
 
             <Form.Group controlId="signup-password">
                 <Form.Label>Пароль</Form.Label>
-                <Form.Control 
+                <Form.Control
                     type='password'
                     name='password'
                     placeholder='Введите пароль...'
@@ -62,7 +52,7 @@ function SignupPage(props) {
             </Form.Group>
             <Form.Group controlId="signup-confirm-password">
                 <Form.Label>Подтвердите пароль</Form.Label>
-                <Form.Control 
+                <Form.Control
                     type='password'
                     name='confirmPassword'
                     placeholder='Повторите пароль...'

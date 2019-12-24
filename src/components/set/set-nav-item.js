@@ -7,40 +7,40 @@ import { Form, ListGroup, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 
-import { ACCOUNT_SELECTIONS_QUERY } from '../../graphql/account';
-import { DELETE_SELECTION } from '../../graphql/selection';
+import { SETS_QUERY } from '../../graphql/account';
+import { DELETE_SET } from '../../graphql/set';
 
-function SelectionNavItem(props) {
+function SetNavItem(props) {
     const {item, onClick} = props;
     const [isEditing, setEditing] = useState(!item.id);
     const [newName, setNewName] = useState(item.name);
-    const [editSelection] = useMutation(EDIT_SELECTION, {
+    const [editSet] = useMutation(EDIT_SET, {
         variables: { id: item.id, name: newName },
         update(proxy) {
             const data = cloneDeep(proxy.readQuery({
-                query: ACCOUNT_SELECTIONS_QUERY
+                query: SETS_QUERY
             }));
             var index = findIndex(data.accountSelections, { id: item.id });
             data.accountSelections[index].name = newName;
 
-            proxy.writeData({ query: ACCOUNT_SELECTIONS_QUERY, data });
+            proxy.writeData({ query: SETS_QUERY, data });
         }
     });
 
-    const [deleteSelection] = useMutation(DELETE_SELECTION, {
+    const [deleteSet] = useMutation(DELETE_SET, {
         variables: { id: item.id },
         update(proxy) {
-            const root = cloneDeep(proxy.readQuery({ query: ACCOUNT_SELECTIONS_QUERY }));
+            const root = cloneDeep(proxy.readQuery({ query: SETS_QUERY }));
             root.accountSelections = root.accountSelections.filter(el => el.id !== item.id);
-            
-            proxy.writeData({ query: ACCOUNT_SELECTIONS_QUERY, data: root });
+
+            proxy.writeData({ query: SETS_QUERY, data: root });
         }
     });
 
     function onKeyUp(target) {
         if (target.key === 'Enter') {
             setEditing(false);
-            editSelection();
+            editSet();
         } else if (target.key === 'Escape') {
             setEditing(false);
         }
@@ -59,36 +59,36 @@ function SelectionNavItem(props) {
                         </Row>
                     </Col>
                     <Col xs={3} sm={2} md={2} lg={2}>
-                        <FontAwesomeIcon icon={faTrash} size="sm" onClick={deleteSelection} />
+                        <FontAwesomeIcon icon={faTrash} size="sm" onClick={deleteSet} />
                         <FontAwesomeIcon icon={faEdit} size="sm" onClick={() => setEditing(true) } />
                     </Col>
                 </Row>
             ) : (
-                <Form.Control 
-                    type="text" 
-                    value={newName} 
+                <Form.Control
+                    type="text"
+                    value={newName}
                     onChange={e => setNewName(e.target.value)}
                     onKeyUp={onKeyUp}
                 />
             )}
-            
-        </ListGroup.Item>    
+
+        </ListGroup.Item>
     );
 }
 
-SelectionNavItem.propTypes = {
+SetNavItem.propTypes = {
     item: PropTypes.shape({
         id: PropTypes.string,
         name: PropTypes.string.isRequired,
         count: PropTypes.number.isRequired,
-    }),    
+    }),
     onClick: PropTypes.func,
 };
 
-const EDIT_SELECTION = gql`
-mutation EditSelection($id: ID!, $name: String!) {
-    editSelection(id: $id, name: $name)
+const EDIT_SET = gql`
+mutation EditSet($id: ID!, $name: String!) {
+    editSet(id: $id, name: $name)
 }
 `;
 
-export default SelectionNavItem;
+export default SetNavItem;

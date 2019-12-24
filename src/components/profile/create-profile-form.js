@@ -8,13 +8,13 @@ import { useForm } from '../../util/hooks';
 
 function CreateProfileForm(props) {
     const { languages } = props;
-    const { values, onChange, onSubmit } = useForm(addProfile, {
+    const { values, onChange, onSubmit } = useForm(addAccountProfile, {
         name: '',
-        nativeLanguageId: '',
-        foreignLanguageId: ''
+        transLang: '',
+        learnLang: ''
     });
 
-    const [addAccountProfile] = useMutation(ADD_ACCOUNT_PROFILE, {
+    const [addProfile] = useMutation(ADD_PROFILE, {
         variables: {
             input: values
         },
@@ -23,42 +23,42 @@ function CreateProfileForm(props) {
         }
     });
 
-    function addProfile() {
-        addAccountProfile();
+    function addAccountProfile() {
+      addProfile();
     }
 
     return (
         <Form onSubmit={onSubmit}>
             <Form.Group controlId="profile-add-name">
                 <Form.Label>Название</Form.Label>
-                <Form.Control 
-                    type="text" 
+                <Form.Control
+                    type="text"
                     name="name"
-                    placeholder="Введите название профиля..." 
+                    placeholder="Введите название профиля..."
                     onChange={onChange}
                 />
             </Form.Group>
 
             <Form.Group controlId="profile-add-native">
                 <Form.Label>Родной язык</Form.Label>
-                <Form.Control 
-                    name="nativeLanguageId" 
+                <Form.Control
+                    name="transLang"
                     as="select"
                     onChange={onChange}>
                     { languages.map((item) => (
-                        <option key={item.code} value={item.id}>{item.name}</option>
+                        <option key={item.code} value={item.code}>{item.name}</option>
                     )) }
                 </Form.Control>
             </Form.Group>
 
             <Form.Group controlId="profile-add-foreign">
                 <Form.Label>Иностранный язык</Form.Label>
-                <Form.Control 
-                    name="foreignLanguageId" 
+                <Form.Control
+                    name="learnLang"
                     as="select"
                     onChange={onChange}>
                     { languages.map((item) => (
-                        <option key={item.code} value={item.id}>{item.name}</option>
+                        <option key={item.code} value={item.code}>{item.name}</option>
                     )) }
                 </Form.Control>
             </Form.Group>
@@ -66,7 +66,7 @@ function CreateProfileForm(props) {
             <Button variant="primary" type="submit">
                 Создать
             </Button>
-        </Form>         
+        </Form>
     );
 }
 
@@ -74,9 +74,9 @@ CreateProfileForm.propTypes = {
     languages: PropTypes.array.isRequired,
 };
 
-const ADD_ACCOUNT_PROFILE = gql`
-mutation AddAccountProfile($input: ProfileCreateInput!) {
-    addAccountProfile(input: $input)
+const ADD_PROFILE = gql`
+mutation AddProfile($input: ProfileCreateInput!) {
+    addProfile(input: $input)
 }
 `;
 

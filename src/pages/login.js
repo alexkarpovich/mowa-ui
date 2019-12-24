@@ -17,33 +17,31 @@ function LoginPage(props) {
     const [login] = useMutation(LOGIN, {
         update(_, { data: { login: userData } }) {
             context.login(userData);
-            props.history.push('/'); 
+            props.history.push('/');
         },
-        variables: {
-            input: values
-        }
+        variables: values
     });
 
     function loginUser() {
         login();
     }
-    
+
     return (
         <Form onSubmit={onSubmit}>
             <Form.Group controlId='login-email'>
                 <Form.Label>Email</Form.Label>
-                <Form.Control 
-                    type='email' 
+                <Form.Control
+                    type='email'
                     name='email'
-                    placeholder='Введите ваш email...' 
+                    placeholder='Введите ваш email...'
                     onChange={onChange}
                 />
             </Form.Group>
 
             <Form.Group controlId='login-password'>
                 <Form.Label>Пароль</Form.Label>
-                <Form.Control 
-                    type='password' 
+                <Form.Control
+                    type='password'
                     name='password'
                     placeholder='Введите пароль...'
                     onChange={onChange}
@@ -57,8 +55,8 @@ function LoginPage(props) {
 }
 
 const LOGIN = gql`
-    mutation Login($input: UserLoginInput!) {
-        login(input: $input) {
+    mutation Login($email: String!, $password: String!) {
+        login(email: $email, password: $password) {
             token
         }
     }

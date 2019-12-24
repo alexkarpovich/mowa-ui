@@ -19,7 +19,7 @@ const Term = styled.div`
         width: 160px;
     }
 
-    & > .text {
+    & > .value {
         display: flex;
         font-size: 20px;
         justify-content: center;
@@ -30,7 +30,7 @@ const TranslationItem = styled.div`
     font-size: 11px;
     line-height: 1;
 
-    & > .text {
+    & > .value {
         color: green;
     }
 
@@ -65,13 +65,13 @@ function TermItem(props) {
             overlay={popover}
         >
             <Term>
-                <div className="text">{item.text}</div>
+                <div className="value">{item.value}</div>
                 <div className="translations">
                 {
                     item.translations.map(tr => (
                     <TranslationItem key={tr.id}>
-                        <div className="transcription">{item.transcription}</div>
-                        <div className="text">{tr.text}</div>
+                        <div className="transcription">{tr.transcription}</div>
+                        <div className="value">{tr.value}</div>
                         <div className="details">{tr.details}</div>
                     </TranslationItem>
                     ))
@@ -85,7 +85,7 @@ function TermItem(props) {
 TermItem.propTypes = {
     item: PropTypes.shape({
         id: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired,
+        value: PropTypes.string.isRequired,
         translations: PropTypes.array,
     }).isRequired,
 };

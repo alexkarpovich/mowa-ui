@@ -1,8 +1,8 @@
 import { gql } from 'apollo-boost';
 
-export const ACCOUNT_SELECTIONS_QUERY = gql`
-{    
-    accountSelections {
+export const SETS_QUERY = gql`
+{
+    sets {
         id
         name
         count
@@ -10,28 +10,28 @@ export const ACCOUNT_SELECTIONS_QUERY = gql`
 }
 `;
 
-export const ACCOUNT_SEARCH_TRANSLATIONS_QUERY = gql`
-query AccountSearchTranslations($text: String!) {    
-    accountSearchTranslations(text: $text) {
+export const SEARCH_TRANSLATIONS_QUERY = gql`
+query SearchTranslations($value: String!) {
+    searchTranslations(value: $value) {
         id
-        text
+        value
         transcription
         details
     }
 }
 `;
 
-export const ACCOUNT_SELECTIONS_FRAGMENT = gql`
-fragment anAccountSelection on Selection {
+export const SET_FRAGMENT = gql`
+fragment anSet on Set {
     id
     name
     count
 }
 `;
 
-export const ADD_ACCOUNT_SELECTION = gql`
-mutation AddAccountSelection($name: String!) {
-    addAccountSelection(name: $name) {
+export const ADD_SET = gql`
+mutation AddSet($name: String!) {
+    addSet(name: $name) {
         id
         name
         count

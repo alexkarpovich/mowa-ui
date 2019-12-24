@@ -5,8 +5,8 @@ import { Button } from 'react-bootstrap';
 import CreatableSelect from 'react-select/creatable';
 import styled from 'styled-components';
 
-import { ACCOUNT_SEARCH_TRANSLATIONS_QUERY } from "../../graphql/account";
-import { ADD_SELECTION_TRANSLATIONS } from "../../graphql/selection";
+import { SEARCH_TRANSLATIONS_QUERY } from "../../graphql/account";
+import { ATTACH_TRANSLATION } from "../../graphql/set";
 
 const TermTranslationsView = styled.div`
   width: 250px;
@@ -15,10 +15,10 @@ const TermTranslationsView = styled.div`
 function TermTranslations(props) {
     const { defaultValues, onClose } = props;
     const [searchText, setSearchText] = useState('');
-    const { loading, data } = useQuery(ACCOUNT_SEARCH_TRANSLATIONS_QUERY, {
+    const { loading, data } = useQuery(SEARCH_TRANSLATIONS_QUERY, {
       variables: { text: searchText }
     });
-    const addSelectionTranslations = useMutation(ADD_SELECTION_TRANSLATIONS);
+    const attachTranslation = useMutation(ATTACH_TRANSLATION);
 
     const handleChange = (newValue, actionMeta) => {
         console.log(newValue, actionMeta);
@@ -35,7 +35,7 @@ function TermTranslations(props) {
           isLoading={loading}
           onChange={handleChange}
           onInputChange={handleTypeTranslation}
-          options={data && data.accountSearchTranslations.map(x => ({value: x.id, label: x.text})) || []}
+          options={data && data.searchTranslations.map(x => ({value: x.id, label: x.text})) || []}
         />
 
         <div className="default-values">
