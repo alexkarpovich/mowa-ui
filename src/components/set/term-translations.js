@@ -1,17 +1,30 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {useMutation, useQuery} from '@apollo/react-hooks';
-import { Button } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
+import { components } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import styled from 'styled-components';
 
-import { SEARCH_TRANSLATIONS_QUERY, SET_FRAGMENT } from '../../graphql/account';
-import { ATTACH_TRANSLATION, SET_TERMS } from '../../graphql/set';
+import { SEARCH_TRANSLATIONS_QUERY } from '../../graphql/account';
+import { ATTACH_TRANSLATION } from '../../graphql/set';
 import { TERM_FRAGMENT } from '../../graphql/term';
 
 const TermTranslationsView = styled.div`
   width: 250px;
 `;
+
+function Input(props) {
+  return (
+    <div>
+      <components.Input {...props} />
+      <div>
+        <Form.Control/>
+        <Form.Control as="textarea" />
+      </div>
+    </div>
+  );
+};
 
 function TermTranslations(props) {
     const { id, setId, defaultValues, onClose } = props;
@@ -22,7 +35,8 @@ function TermTranslations(props) {
     const [attachTranslation] = useMutation(ATTACH_TRANSLATION);
 
     const handleChange = (newValue, actionMeta) => {
-        console.log(newValue, actionMeta);
+        if (!newValue) return;
+
         attachTranslation({
           variables: {
             input: {
@@ -53,6 +67,7 @@ function TermTranslations(props) {
           onChange={handleChange}
           onInputChange={handleTypeTranslation}
           options={data && data.searchTranslations.map(x => ({value: x.id, label: x.value})) || []}
+          components={{ Input }}
         />
 
         <div className="default-values">
