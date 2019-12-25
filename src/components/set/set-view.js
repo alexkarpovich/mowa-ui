@@ -21,7 +21,7 @@ function SetView({ id }) {
         variables: { id }
     });
     const [attachTerm] = useMutation(ATTACH_TERM, {
-        variables: { id, text: term },
+        variables: { id, value: term },
         update(proxy, { data: res }) {
             let root = proxy.readQuery({
                 query: SET_TERMS,
@@ -82,6 +82,7 @@ function SetView({ id }) {
                         !loading && data && data.terms.map((item) => (
                             <TermItem
                                 key={item.id}
+                                setId={id}
                                 item={item}
                             />
                         ))

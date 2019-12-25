@@ -19,7 +19,7 @@ export const ATTACH_TERM = gql`
 mutation AttachTerm($id: ID!, $value: String!) {
     attachTerm(id: $id, value: $value) {
         id
-        text
+        value
         translations {
             id
             value

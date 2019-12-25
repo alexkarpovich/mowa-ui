@@ -42,7 +42,7 @@ const TranslationItem = styled.div`
 `;
 
 function TermItem(props) {
-    const {item} = props;
+    const { setId, item } = props;
     const overlayRef = useRef(null);
 
     const popover = (
@@ -50,6 +50,7 @@ function TermItem(props) {
             <Popover.Content>
               <TermTranslations
                 id={item.id}
+                setId={setId}
                 defaultValues={item.translations}
                 onClose={() => overlayRef.current.hide()}
               />
@@ -83,11 +84,12 @@ function TermItem(props) {
 }
 
 TermItem.propTypes = {
-    item: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired,
-        translations: PropTypes.array,
-    }).isRequired,
+  setId: PropTypes.string.isRequired,
+  item: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+      translations: PropTypes.array,
+  }).isRequired,
 };
 
 

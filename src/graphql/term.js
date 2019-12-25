@@ -7,3 +7,16 @@ mutation EditTerm($input: TermEditInput!) {
     }
 }
 `;
+
+export const TERM_FRAGMENT = gql`
+  fragment anTerm on Term {
+    id
+    value
+    translations {
+      id
+      value
+      details
+      transcription
+    }
+  }
+`;
