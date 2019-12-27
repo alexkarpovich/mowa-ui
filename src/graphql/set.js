@@ -43,6 +43,17 @@ export const ATTACH_TRANSLATION = gql`
   }
 `;
 
+export const ATTACH_EXISTING_TRANSLATION = gql`
+  mutation AttachExistingTranslation($input: AttachExistingTranslationInput!) {
+    attachExistingTranslation(input: $input) {
+      id
+      value
+      transcription
+      details
+    }
+  }
+`;
+
 export const DELETE_SET = gql`
 mutation DeleteSet($id: ID!) {
     deleteSet(id: $id)

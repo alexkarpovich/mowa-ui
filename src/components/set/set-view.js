@@ -61,7 +61,7 @@ function SetView({ id }) {
       </Row>
       <Row>
         <Col>
-          {data && <SetTermsTable terms={data.terms}/>}
+          {data && <SetTermsTable setId={id} terms={data.terms}/>}
         </Col>
       </Row>
     </Fragment>

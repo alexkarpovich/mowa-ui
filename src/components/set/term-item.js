@@ -1,94 +1,96 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { Overlay, Popover } from 'react-bootstrap';
 import styled from 'styled-components';
 import TermTranslations from "./term-translations";
 
-const Term = styled.div`
-    background-color: #f7fbff;
-    box-shadow: 0 2px 2px rgba(100,100,100,0.2);
-    padding: 5px;
-    margin-bottom: 10px;
-    border: 1px solid #f9f9f9;
+const StyledTranslation = styled.div`
+  line-height: 1;
+  margin-left: 10px;
+  position: relative;
 
-    &.w1 {
-        width: 80px;
-    }
+  &:before {
+    content: "-";
+    color: #b1b1b1;
+    position: absolute;
+    left: -10px;
+  }
 
-    &.w2 {
-        width: 160px;
-    }
-
-    & > .value {
-        display: flex;
-        font-size: 20px;
-        justify-content: center;
-    }
+  .details {
+    font-size: 0.8em;
+    color: #666;
+    padding-left: 5px;
+    border-left: 2px solid #666;
+  }
 `;
 
-const TranslationItem = styled.div`
-    font-size: 11px;
-    line-height: 1;
-
-    & > .value {
-        color: green;
-    }
-
-    & > .details {
-        color: gray;
-        padding-left: 5px;
-        border-left: 2px solid gray;
-    }
-`;
+const TranslationItem = ({translation}) => (
+  <StyledTranslation>
+    <div>{translation.value}</div>
+    <div className="details">{translation.details}</div>
+  </StyledTranslation>
+);
 
 function TermItem(props) {
-    const { setId, item } = props;
-    const overlayRef = useRef(null);
+  const {index, setId, object} = props;
+  const transRef = useRef(null);
+  const [showPopover, setShowPopover] = useState(false);
 
-    const popover = (
-        <Popover position="bottom">
-            <Popover.Content>
-              <TermTranslations
-                id={item.id}
-                setId={setId}
-                defaultValues={item.translations}
-                onClose={() => overlayRef.current.hide()}
-              />
-            </Popover.Content>
-        </Popover>
-    );
+  function displayPopover(e) {
+    setShowPopover(true);
+    e.stopPropagation();
+  }
 
-    return (
-        <OverlayTrigger
-            ref={overlayRef}
-            trigger="click"
-            placement="bottom"
-            overlay={popover}
+  function hidePopover(e) {
+    setShowPopover(false);
+    e.stopPropagation();
+  }
+
+  const popover = (
+    <Popover style={{width: '400px', maxWidth: '400px'}} position="bottom">
+      <Popover.Content>
+        <TermTranslations
+          id={object.id}
+          setId={setId}
+          onClose={hidePopover}
+        />
+      </Popover.Content>
+    </Popover>
+  );
+
+  return (
+    <tr key={index} className="term">
+      <td>{index}</td>
+      <td>
+        <div className="value">{object.value}</div>
+        <div className="transcription">{object.transcription}</div>
+      </td>
+      <td ref={transRef} onClick={displayPopover}>
+        {object.translations.map((trans, i) => (
+          <TranslationItem key={i} translation={trans}/>
+        ))}
+
+        <Overlay
+          show={showPopover}
+          target={transRef}
+          placement="bottom"
+          containerPadding={20}
         >
-            <Term>
-                <div className="value">{item.value}</div>
-                <div className="translations">
-                {
-                    item.translations.map(tr => (
-                    <TranslationItem key={tr.id}>
-                        <div className="transcription">{tr.transcription}</div>
-                        <div className="value">{tr.value}</div>
-                        <div className="details">{tr.details}</div>
-                    </TranslationItem>
-                    ))
-                }
-                </div>
-            </Term>
-        </OverlayTrigger>
-    );
+          {popover}
+        </Overlay>
+      </td>
+    </tr>
+  );
 }
 
 TermItem.propTypes = {
+  index: PropTypes.number.isRequired,
   setId: PropTypes.string.isRequired,
-  item: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
-      translations: PropTypes.array,
+  object: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+    transcription: PropTypes.string.isRequired,
+    translations: PropTypes.array,
   }).isRequired,
 };
 

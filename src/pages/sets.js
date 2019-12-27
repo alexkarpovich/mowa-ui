@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { ListGroup, Row, Col, Spinner } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
@@ -25,6 +25,7 @@ const AddSetBtn = styled.span`
 function SetsPage() {
     const [activeItem, setActiveItem] = useState('');
     const { loading, data } = useQuery(SETS_QUERY);
+    const client = useApolloClient();
     const [addSet] = useMutation(ADD_SET, {
         variables: { name: 'Безымянный набор' },
         update(proxy, { data: res }) {
@@ -34,8 +35,9 @@ function SetsPage() {
         }
     });
 
-    function pickSelection(id) {
-        console.log(id)
+    async function pickSelection(id) {
+      await client.resetStore();
+      setActiveItem(id);
     }
 
     return (
@@ -57,14 +59,10 @@ function SetsPage() {
                         </Row>
                         <Row>
                             <Col>
-                                <ListGroup activeKey={activeItem} onSelect={key => setActiveItem(key)}>
+                                <ListGroup activeKey={activeItem} onSelect={pickSelection}>
                                 {
                                     data.sets.map((item) => (
-                                        <SetNavItem
-                                            key={item.id}
-                                            item={item}
-                                            onClick={() => pickSelection(item.id)}
-                                        />
+                                        <SetNavItem key={item.id} item={item} />
                                     ))
                                 }
                                 </ListGroup>

@@ -2,6 +2,8 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 import styled from 'styled-components';
 
+import TermItem from './term-item';
+
 const StyledTable = styled(Table)`
   th.translations {
     width: 100%;
@@ -20,34 +22,7 @@ const StyledTable = styled(Table)`
   }
 `;
 
-const StyledTranslation = styled.div`
-  line-height: 1;
-  margin-left: 10px;
-  position: relative;
-
-  &:before {
-    content: "-";
-    color: #b1b1b1;
-    position: absolute;
-    left: -10px;
-  }
-
-  .details {
-    font-size: 0.8em;
-    color: #666;
-    padding-left: 5px;
-    border-left: 2px solid #666;
-  }
-`;
-
-const TranslationItem = ({ translation }) => (
-  <StyledTranslation>
-    <div>{translation.value}</div>
-    <div className="details">{translation.details}</div>
-  </StyledTranslation>
-);
-
-function SetTermsTable({ terms }) {
+function SetTermsTable({ setId, terms }) {
   return (
     <StyledTable striped bordered hover size="sm">
       <thead>
@@ -60,18 +35,12 @@ function SetTermsTable({ terms }) {
       <tbody>
       {
         terms.map((term, i) => (
-          <tr key={i} className="term">
-            <td>{terms.length - i}</td>
-            <td>
-              <div className="value">{term.value}</div>
-              <div className="transcription">{term.transcription}</div>
-            </td>
-            <td>
-              {term.translations.map((trans, i) => (
-                <TranslationItem key={i} translation={trans}/>
-              ))}
-            </td>
-          </tr>
+          <TermItem
+            key={i}
+            index={terms.length - i}
+            setId={setId}
+            object={term}
+          />
         ))
       }
       </tbody>
