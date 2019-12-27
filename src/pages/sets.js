@@ -23,7 +23,7 @@ const AddSetBtn = styled.span`
 `;
 
 function SetsPage() {
-    const [activeItem, setActiveItem] = useState('');
+    const [ids, setIds] = useState([]);
     const { loading, data } = useQuery(SETS_QUERY);
     const client = useApolloClient();
     const [addSet] = useMutation(ADD_SET, {
@@ -35,9 +35,10 @@ function SetsPage() {
         }
     });
 
-    async function pickSelection(id) {
+    async function pickSelection(id, shouldAppend) {
       await client.resetStore();
-      setActiveItem(id);
+
+      setIds(shouldAppend ? [...ids, id] : [id]);
     }
 
     return (
@@ -59,11 +60,16 @@ function SetsPage() {
                         </Row>
                         <Row>
                             <Col>
-                                <ListGroup activeKey={activeItem} onSelect={pickSelection}>
+                                <ListGroup>
                                 {
-                                    data.sets.map((item) => (
-                                        <SetNavItem key={item.id} item={item} />
-                                    ))
+                                  data.sets.map((item) => (
+                                    <SetNavItem
+                                      key={item.id}
+                                      ids={ids}
+                                      item={item}
+                                      onClick={(event) => pickSelection(item.id, event.shiftKey)}
+                                    />
+                                  ))
                                 }
                                 </ListGroup>
                             </Col>
@@ -71,8 +77,8 @@ function SetsPage() {
 
                     </Col>
                     <Col sm={9}>
-                        { activeItem ? (
-                            <SetView id={activeItem} />
+                        { ids.length ? (
+                            <SetView ids={ids} />
                         ) : (
                             <div>
                                 Выберите набор.

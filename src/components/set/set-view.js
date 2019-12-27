@@ -4,8 +4,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Form, Row, Col } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import { SET_TERMS, ATTACH_TERM } from '../../graphql/set';
-import { SET_FRAGMENT } from '../../graphql/account';
+import { TERMS, ATTACH_TERM, SET_FRAGMENT } from '../../graphql/set';
 import SetTermsTable from './set-terms-table';
 
 const NewWordInput = styled(Form.Control)`
@@ -13,23 +12,24 @@ const NewWordInput = styled(Form.Control)`
     width: 50%;
 `;
 
-function SetView({ id }) {
+function SetView({ ids }) {
+  const id = ids[0];
   const [term, setTerm] = useState('');
-  const { loading, data } = useQuery(SET_TERMS, {
-    variables: { id }
+  const { loading, data } = useQuery(TERMS, {
+    variables: { ids }
   });
   const [attachTerm] = useMutation(ATTACH_TERM, {
     variables: { id, value: term },
     update(proxy, { data: res }) {
       let root = proxy.readQuery({
-        query: SET_TERMS,
-        variables: { id }
+        query: TERMS,
+        variables: { ids }
       });
 
       root.terms.unshift(res.attachTerm);
       proxy.writeData({
-        query: SET_TERMS,
-        variables: { id },
+        query: TERMS,
+        variables: { ids },
         data: root
       });
 
@@ -69,7 +69,7 @@ function SetView({ id }) {
 }
 
 SetView.propTypes = {
-  id: PropTypes.string.isRequired
+  ids: PropTypes.array.isRequired
 };
 
 

@@ -6,7 +6,7 @@ import CreatableSelect from 'react-select/creatable';
 import styled from 'styled-components';
 
 import { SEARCH_TRANSLATIONS_QUERY } from '../../graphql/account';
-import { ATTACH_TRANSLATION, ATTACH_EXISTING_TRANSLATION } from '../../graphql/set';
+import { ATTACH_TRANSLATION } from '../../graphql/set';
 import { TERM_FRAGMENT } from '../../graphql/term';
 import { useForm } from '../../util/hooks';
 
@@ -21,43 +21,38 @@ const TermTranslationsView = styled.div`
 function TermTranslations(props) {
     const { id, setId, onClose } = props;
     const [showExtended, setShowExtended] = useState(false);
-    const { values, setValue, onChange, onSubmit } = useForm(handleAttachTranslation, {
+    const { values, setValue, onChange, onSubmit } = useForm(triggerAttachTranslation, {
+      setId,
+      termId: id,
+      id: null,
       value: '',
       transcription: '',
       details: ''
     });
 
     const { loading, data } = useQuery(SEARCH_TRANSLATIONS_QUERY, {
-      variables: { value: values.value }
+      variables: { termId: id, value: values.value }
     });
-    const [attachTranslation] = useMutation(ATTACH_TRANSLATION);
-    const [attachExistingTranslation] = useMutation(ATTACH_EXISTING_TRANSLATION);
-
-    function handleAttachTranslation() {
-      let input = { setId, termId: id };
-
-      if (!showExtended) { // If user selected existing translations then value = $translation.id
-        input.translationId = values.value;
-      } else { // else value = user input
-        input = Object.assign(input, values);
+    const [attachTranslation] = useMutation(ATTACH_TRANSLATION, {
+      variables: { input: values },
+      update(proxy, { data: res }) {
+        let root = proxy.readFragment({ id, fragment: TERM_FRAGMENT });
+        root.translations.push(res.attachTranslation);
+        proxy.writeFragment({ id, fragment: TERM_FRAGMENT, data: {...root} });
+        setShowExtended(false);
       }
+    });
 
-      attachTranslation({
-        variables: { input },
-        update(proxy, { data: res }) {
-          let root = proxy.readFragment({ id, fragment: TERM_FRAGMENT });
-          root.translations.push(res.attachTranslation);
-          proxy.writeFragment({ id, fragment: TERM_FRAGMENT, data: {...root} })
-          setShowExtended(false);
-        }
-      }).catch(err => console.log(err));
+    function triggerAttachTranslation() {
+      attachTranslation().catch(e => console.log(e));
     }
 
     function handleChange(newValue) {
         if (!newValue) return;
 
         if (!newValue.__isNew__) {
-          handleAttachTranslation();
+          setValue('id', newValue.value);
+          setTimeout(onSubmit, 0);
         } else {
           setShowExtended(true);
         }

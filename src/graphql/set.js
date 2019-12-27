@@ -1,8 +1,8 @@
 import { gql } from 'apollo-boost';
 
-export const SET_TERMS = gql`
-query Terms($id: ID!) {
-    terms(id: $id) {
+export const TERMS = gql`
+query Terms($ids: [ID!]!) {
+    terms(ids: $ids) {
         id
         value
         transcription
@@ -43,19 +43,16 @@ export const ATTACH_TRANSLATION = gql`
   }
 `;
 
-export const ATTACH_EXISTING_TRANSLATION = gql`
-  mutation AttachExistingTranslation($input: AttachExistingTranslationInput!) {
-    attachExistingTranslation(input: $input) {
-      id
-      value
-      transcription
-      details
-    }
-  }
-`;
-
 export const DELETE_SET = gql`
 mutation DeleteSet($id: ID!) {
     deleteSet(id: $id)
 }
+`;
+
+export const SET_FRAGMENT = gql`
+  fragment anSet on Set {
+    id
+    name
+    count
+  }
 `;

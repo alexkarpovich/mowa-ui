@@ -11,21 +11,13 @@ export const SETS_QUERY = gql`
 `;
 
 export const SEARCH_TRANSLATIONS_QUERY = gql`
-query SearchTranslations($value: String!) {
-    searchTranslations(value: $value) {
+query SearchTranslations($termId: ID!, $value: String!) {
+    searchTranslations(termId: $termId, value: $value) {
         id
         value
         transcription
         details
     }
-}
-`;
-
-export const SET_FRAGMENT = gql`
-fragment anSet on Set {
-    id
-    name
-    count
 }
 `;
 
