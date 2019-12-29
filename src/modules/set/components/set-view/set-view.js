@@ -1,19 +1,18 @@
 import React, { useState, useRef, Fragment, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { Form, Row, Col } from 'react-bootstrap';
-import styled from 'styled-components';
+import { Button, Row, Col } from 'react-bootstrap';
 
-import { TERMS, ATTACH_TERM, SET_FRAGMENT } from '../../graphql/set';
-import SetTermsTable from './set-terms-table';
+import { TERMS, ATTACH_TERM, SET_FRAGMENT } from 'schemas/set';
+import { ENSURE_TRAINING } from 'schemas/training';
+import TermsTable from '../terms-table/terms-table';
+import { NewWordInput, TrainingButtons} from './set-view.style';
 
-const NewWordInput = styled(Form.Control)`
-    margin: 10px;
-    width: 50%;
-`;
 
 function SetView({ ids }) {
   const id = ids[0];
+  const history = useHistory();
   const [term, setTerm] = useState('');
   const { loading, data } = useQuery(TERMS, {
     variables: { ids }
@@ -38,6 +37,16 @@ function SetView({ ids }) {
       proxy.writeFragment({ id, fragment: SET_FRAGMENT, data: { ...root } });
     }
   });
+  const [ensureTraining] = useMutation(ENSURE_TRAINING);
+
+  function startTraining(type) {
+    ensureTraining({
+      variables: { type, setIds: ids },
+      update(_, { data: res}) {
+        history.push(`/training/${res.ensureTraining.id}`)
+      }
+    }).catch(err => console.log(err));
+  }
 
   function onKeyUp(target) {
     if (target.key === 'Enter') {
@@ -50,18 +59,26 @@ function SetView({ ids }) {
     <Fragment>
       <Row>
         <Col className="d-flex justify-content-center">
-          <NewWordInput
-            name="term"
-            placeholder="Введите выражение..."
-            value={term}
-            onKeyUp={onKeyUp}
-            onChange={e => setTerm(e.target.value)}
-          />
+          { ids.length === 1 && (
+            <NewWordInput
+              name="term"
+              placeholder="Введите выражение..."
+              value={term}
+              onKeyUp={onKeyUp}
+              onChange={e => setTerm(e.target.value)}
+            />
+          )}
+
+          <TrainingButtons>
+            <Button variant="primary" onClick={() => startTraining(0)}>I</Button>
+            <Button variant="primary">II</Button>
+            <Button variant="primary">III</Button>
+          </TrainingButtons>
         </Col>
       </Row>
       <Row>
         <Col>
-          {data && <SetTermsTable setId={id} terms={data.terms}/>}
+          {data && <TermsTable setId={id} terms={data.terms}/>}
         </Col>
       </Row>
     </Fragment>

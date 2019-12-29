@@ -43,6 +43,12 @@ export const ATTACH_TRANSLATION = gql`
   }
 `;
 
+export const EDIT_SET = gql`
+  mutation EditSet($id: ID!, $name: String!) {
+    editSet(id: $id, name: $name)
+  }
+`;
+
 export const DELETE_SET = gql`
 mutation DeleteSet($id: ID!) {
     deleteSet(id: $id)

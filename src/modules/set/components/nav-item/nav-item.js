@@ -1,35 +1,16 @@
-import { cloneDeep, findIndex } from 'lodash';
+import { cloneDeep } from 'lodash';
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
-import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/react-hooks';
-import { Form, ListGroup } from 'react-bootstrap';
-import styled from 'styled-components';
+import { Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-import { SETS_QUERY } from '../../graphql/account';
-import { DELETE_SET, SET_FRAGMENT } from '../../graphql/set';
+import { SETS_QUERY } from 'schemas/account';
+import { EDIT_SET, DELETE_SET, SET_FRAGMENT } from 'schemas/set';
+import { StyledNavItem } from './nav-item.style';
 
-const NavItem = styled(ListGroup.Item)`
-  display: flex;
-  padding: 10px;
-  outline: none !important;
-
-  & > .content {
-    width: 100%;
-
-    & > .name {
-      font-weight: bold;
-    }
-
-    & > .count {
-      font-size: 0.7em;
-    }
-  }
-`;
-
-function SetNavItem(props) {
+function NavItem(props) {
   const { ids, item, onClick } = props;
   const isSelected = ids.indexOf(item.id) !== -1;
   const [isEditing, setEditing] = useState(!item.id);
@@ -66,7 +47,7 @@ function SetNavItem(props) {
   }
 
   return (
-    <NavItem action active={isSelected} onClick={onClick}>
+    <StyledNavItem action active={isSelected} onClick={onClick}>
       {!isEditing ? (
         <Fragment>
           <div className="content">
@@ -86,11 +67,11 @@ function SetNavItem(props) {
           onKeyUp={onKeyUp}
         />
       )}
-    </NavItem>
+    </StyledNavItem>
   );
 }
 
-SetNavItem.propTypes = {
+NavItem.propTypes = {
   ids: PropTypes.array.isRequired,
   item: PropTypes.shape({
     id: PropTypes.string,
@@ -100,10 +81,4 @@ SetNavItem.propTypes = {
   onClick: PropTypes.func
 };
 
-const EDIT_SET = gql`
-  mutation EditSet($id: ID!, $name: String!) {
-    editSet(id: $id, name: $name)
-  }
-`;
-
-export default SetNavItem;
+export default NavItem;

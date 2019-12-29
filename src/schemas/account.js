@@ -1,5 +1,21 @@
 import { gql } from 'apollo-boost';
 
+export const LOGIN = gql`
+  mutation Login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      token
+    }
+  }
+`;
+
+export const SIGNUP = gql`
+  mutation Signup($input: UserCreateInput!) {
+    signup(input: $input) {
+      token
+    }
+  }
+`;
+
 export const SETS_QUERY = gql`
 {
     sets {
@@ -29,4 +45,10 @@ mutation AddSet($name: String!) {
         count
     }
 }
+`;
+
+export const ADD_PROFILE = gql`
+  mutation AddProfile($input: ProfileCreateInput!) {
+    addProfile(input: $input)
+  }
 `;

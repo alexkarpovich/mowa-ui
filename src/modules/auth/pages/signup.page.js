@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useMutation } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
 
-import { AuthContext } from '../context/auth';
-import { useForm } from '../util/hooks';
+import { AuthContext } from 'context/auth';
+import { useForm } from 'util/hooks';
+import { SIGNUP } from 'schemas/account';
 
 
 function SignupPage(props) {
@@ -65,13 +65,5 @@ function SignupPage(props) {
         </Form>
     );
 }
-
-const SIGNUP = gql`
-    mutation Signup($input: UserCreateInput!) {
-        signup(input: $input) {
-            token
-        }
-    }
-`;
 
 export default SignupPage;

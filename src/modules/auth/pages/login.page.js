@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useMutation } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
 
-import { AuthContext } from '../context/auth';
-import { useForm } from '../util/hooks';
+import { AuthContext } from 'context/auth';
+import { useForm } from 'util/hooks';
+import { LOGIN } from 'schemas/account';
 
 
 function LoginPage(props) {
@@ -53,13 +53,5 @@ function LoginPage(props) {
         </Form>
     );
 }
-
-const LOGIN = gql`
-    mutation Login($email: String!, $password: String!) {
-        login(email: $email, password: $password) {
-            token
-        }
-    }
-`;
 
 export default LoginPage;

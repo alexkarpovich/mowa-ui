@@ -1,7 +1,7 @@
 import React, { useState, useContext, Fragment } from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 
-import { AuthContext } from '../context/auth';
+import { AuthContext } from 'context/auth';
 
 function MenuBar() {
     const { user, logout } = useContext(AuthContext);
