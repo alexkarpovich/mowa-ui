@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 
 import { TRAINING_META_QUERY, RESET_TRAINING } from '../../../schemas/training';
 import { ProgressBar, Spinner } from 'react-bootstrap';
+
+import { StyledTrainingPage } from "../components/training-page.style";
 import TrainingCard from '../components/training-card/training-card';
 import TrainingBreak from '../components/training-break/training-break';
 
@@ -21,13 +23,13 @@ function TrainingPage({ match }) {
   });
 
   return (
-    <div>
+    <StyledTrainingPage>
       { loading ? (
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner>
       ) : (
-        <div>
+        <Fragment>
           <ProgressBar
             striped
             variant="success"
@@ -38,6 +40,7 @@ function TrainingPage({ match }) {
 
           { (showBreak || data.trainingMeta.complete === data.trainingMeta.total) ? (
             <TrainingBreak
+              meta={data.trainingMeta}
               onRestart={reset}
               onContinue={() => setShowBreak(false)}
             />
@@ -48,9 +51,9 @@ function TrainingPage({ match }) {
               meta={data.trainingMeta}
             />
           )}
-        </div>
+        </Fragment>
       ) }
-    </div>
+    </StyledTrainingPage>
   );
 }
 

@@ -2,14 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 
+import { StyledCardAsking } from "./card-asking.style";
+
 function CardAsking({ translation, onShow }) {
 
   return (
-    <div>
-      <div>{translation.value}</div>
-      <div>{translation.details}</div>
-      <Button onClick={onShow}>Показать</Button>
-    </div>
+    <StyledCardAsking>
+      <div className="content">
+        <div className="translation">{translation.value}</div>
+        <div className="details">{translation.details}</div>
+      </div>
+      <Button className="show-btn" onClick={onShow}>Показать</Button>
+    </StyledCardAsking>
   );
 }
 

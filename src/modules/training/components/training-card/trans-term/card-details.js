@@ -1,18 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import { Button, ButtonGroup } from 'react-bootstrap';
+
+import { StyledCardDetails } from "./card-details.style";
 
 function CardDetails({ term, translation, onComplete, onRepeat }) {
-
   return (
-    <div>
-      <div>{term.value}</div>
-      <div>{translation.transcription}</div>
-      <div>{translation.value}</div>
-      <div>{translation.details}</div>
-      <Button onClick={onRepeat}>Повторить</Button>
-      <Button onClick={onComplete}>Дальше</Button>
-    </div>
+    <StyledCardDetails>
+      <div className="content">
+        <div className="term">{term.value}</div>
+        <div className="transcription">{translation.transcription}</div>
+        <div className="translation">{translation.value}</div>
+        <div className="details">{translation.details}</div>
+      </div>
+
+      <ButtonGroup className="mr-2" aria-label="First group">
+        <Button onClick={onRepeat}>Повторить</Button>
+      </ButtonGroup>
+      <ButtonGroup className="mr-2" aria-label="First group">
+        <Button onClick={onComplete}>Дальше</Button>
+      </ButtonGroup>
+    </StyledCardDetails>
   );
 }
 

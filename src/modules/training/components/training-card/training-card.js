@@ -5,6 +5,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Spinner } from 'react-bootstrap';
 
 import { TRAINING_ITEM_QUERY, COMPLETE_ITEM, TRAINING_META_QUERY } from 'schemas/training';
+import { StyledTrainingCard } from "./training-card.style";
 import CardAsking from './trans-term/card-asking';
 import CardDetails from './trans-term/card-details';
 
@@ -37,30 +38,32 @@ function TrainingCard({ trainingId }) {
   }
 
   return (
-    <div>
-      { loading ? (
-        <Spinner animation="border" role="status">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
-      ) : (
-        <div>
-          { cardState === 0 && (
-            <CardAsking
-              translation={data.trainingItem.translation}
-              onShow={() => setCardState(1)}
-            />
-          ) }
-          { cardState === 1 && (
-            <CardDetails
-              term={data.trainingItem.term}
-              translation={data.trainingItem.translation}
-              onComplete={complete}
-              onRepeat={fetchNext}
-            />
-          ) }
-        </div>
-      ) }
-    </div>
+    <StyledTrainingCard>
+      <StyledTrainingCard.Body>
+        { loading ? (
+          <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+        ) : (
+          <div>
+            { cardState === 0 && (
+              <CardAsking
+                translation={data.trainingItem.translation}
+                onShow={() => setCardState(1)}
+              />
+            ) }
+            { cardState === 1 && (
+              <CardDetails
+                term={data.trainingItem.term}
+                translation={data.trainingItem.translation}
+                onComplete={complete}
+                onRepeat={fetchNext}
+              />
+            ) }
+          </div>
+        ) }
+      </StyledTrainingCard.Body>
+    </StyledTrainingCard>
   );
 }
 
