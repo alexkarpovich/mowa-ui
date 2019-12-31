@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { Form, Button } from 'react-bootstrap';
 
 import { useForm } from 'util/hooks';
-import { ADD_PROFILE } from 'schemas/account';
+import {ADD_PROFILE, ME_QUERY} from 'schemas/account';
 
 function CreateProfileForm(props) {
   const { languages } = props;
@@ -15,11 +15,11 @@ function CreateProfileForm(props) {
   });
 
   const [addProfile] = useMutation(ADD_PROFILE, {
-    variables: {
-      input: values
-    },
-    update(proxy, data) {
-      console.log(data)
+    variables: { input: values },
+    update(proxy, { data: res}) {
+      const root = proxy.readQuery({ query: ME_QUERY });
+      root.me.profiles = [res.addProfile, ...root.me.profiles];
+      proxy.writeData({ query: ME_QUERY, data: root });
     }
   });
 

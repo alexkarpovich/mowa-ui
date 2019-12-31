@@ -34,6 +34,20 @@ export const SIGNUP = gql`
   }
 `;
 
+export const ME_QUERY = gql`
+  {
+    me {
+      id
+      email
+      profiles {
+        id
+        name
+        active
+      }
+    }
+  }
+`;
+
 export const SETS_QUERY = gql`
 {
     sets {
@@ -66,7 +80,16 @@ mutation AddSet($name: String!) {
 `;
 
 export const ADD_PROFILE = gql`
-  mutation AddProfile($input: ProfileCreateInput!) {
-    addProfile(input: $input)
+  mutation AddProfile($input: AddProfileInput!) {
+    addProfile(input: $input) {
+      id
+      name
+    }
+  }
+`;
+
+export const ACTIVATE_PROFILE = gql`
+  mutation ActivateProfile($id: ID!) {
+    activateProfile(id: $id)
   }
 `;

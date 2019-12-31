@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { Fragment, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Overlay } from 'react-bootstrap';
+import { Overlay, Popover } from 'react-bootstrap';
 
-import TermPopover from "./term-popover";
+import TermTranslator from "./term-translator";
 import TranslationItem from './translation-item';
 
 function TermRow(props) {
@@ -38,11 +38,15 @@ function TermRow(props) {
           placement="bottom"
           containerPadding={20}
         >
-          <TermPopover
-            id={object.id}
-            setId={setId}
-            onClose={hidePopover}
-          />
+          <Popover style={{ width: '400px' }} position="bottom">
+            <Popover.Content>
+              <TermTranslator
+                id={object.id}
+                setId={setId}
+                onClose={hidePopover}
+              />
+            </Popover.Content>
+          </Popover>
         </Overlay>
       </td>
     </tr>

@@ -1,15 +1,32 @@
 import React, { useState, useContext, Fragment } from 'react';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import {useMutation, useQuery} from '@apollo/react-hooks';
+import { Navbar, Nav, NavDropdown, Spinner } from 'react-bootstrap';
 
 import { AuthContext } from 'context/auth';
+import { ME_QUERY, ACTIVATE_PROFILE } from "schemas/account";
 
 function MenuBar() {
     const { user, logout } = useContext(AuthContext);
+    const { loading, data } = useQuery(ME_QUERY);
+    const [activateProfile] = useMutation(ACTIVATE_PROFILE);
     const pathname = window.location.pathname;
     const path = pathname === '/' ? 'home' : pathname.substr(1);
     const [activeItem, setActiveItem] = useState(path);
 
-    console.log(user);
+    function activateUserProfile(id) {
+      activateProfile({
+        variables: { id },
+        update(proxy) {
+          const root = proxy.readQuery({ query: ME_QUERY });
+          root.me.profiles = root.me.profiles.map(profile => {
+            profile.active = profile.id === id;
+
+            return profile;
+          });
+          proxy.writeData({ query: ME_QUERY, data: root });
+        }
+      }).catch(err => console.log(err));
+    }
 
     return (
         <Navbar bg="light" variant="light">
@@ -19,15 +36,23 @@ function MenuBar() {
                 { user ? (
                     <Fragment>
                         <Nav.Link href="/sets">Наборы</Nav.Link>
-                        <NavDropdown title="Профили" id="profile-dropdown">
-                          {
-                            user.profiles.map(profile => (
-                              <NavDropdown.Item active={profile.active}>{profile.name}</NavDropdown.Item>
-                            ))
-                          }
-                          <NavDropdown.Divider />
-                          <NavDropdown.Item eventKey="4.4">+ добавить</NavDropdown.Item>
-                        </NavDropdown>
+                        { loading ? <Spinner animation="border" /> : (
+                          <NavDropdown title="Профили" id="profile-dropdown">
+                            {
+                              data.me.profiles.map((profile, i) => (
+                                <NavDropdown.Item
+                                  key={i}
+                                  active={profile.active}
+                                  onClick={() => activateUserProfile(profile.id)}
+                                >
+                                  {profile.name}
+                                </NavDropdown.Item>
+                              ))
+                            }
+                            <NavDropdown.Divider />
+                            <NavDropdown.Item href="/profile/add">+ добавить</NavDropdown.Item>
+                          </NavDropdown>
+                        ) }
                         <Nav.Link onClick={logout}>Выйти</Nav.Link>
                     </Fragment>
                 ) : (

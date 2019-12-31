@@ -8,9 +8,9 @@ import { SEARCH_TRANSLATIONS_QUERY } from 'schemas/account';
 import { ATTACH_TRANSLATION } from 'schemas/set';
 import { TERM_FRAGMENT } from 'schemas/term';
 import { useForm } from 'util/hooks';
-import { StyledTermPopover } from './term-popover.style';
+import { StyledTermTranslator } from './term-translator.style';
 
-function TermPopover(props) {
+function TermTranslator(props) {
     const { id, setId, onClose } = props;
     const [showExtended, setShowExtended] = useState(false);
     const { values, setValue, onChange, onSubmit } = useForm(triggerAttachTranslation, {
@@ -55,58 +55,56 @@ function TermPopover(props) {
     }
 
     return (
-      <StyledTermPopover position="bottom">
-        <Popover.Content>
-          <CreatableSelect
-            isClearable
-            className="translation-select"
-            isLoading={loading}
-            onChange={handleChange}
-            onInputChange={handleTypeTranslation}
-            options={data && data.searchTranslations.map(x => ({value: x.id, label: x.value})) || []}
-          />
+      <StyledTermTranslator>
+        <CreatableSelect
+          isClearable
+          className="translation-select"
+          isLoading={loading}
+          onChange={handleChange}
+          onInputChange={handleTypeTranslation}
+          options={data && data.searchTranslations.map(x => ({value: x.id, label: x.value})) || []}
+        />
 
-          { showExtended && (
-            <Fragment>
-              <Form.Group>
-                <Form.Control
-                  name="transcription"
-                  placeholder="Укажите транскрипцию..."
-                  value={values.transcription}
-                  onChange={onChange}
-                />
-              </Form.Group>
-              <Form.Group>
-                <Form.Control
-                  name="details"
-                  placeholder="Детали..."
-                  value={values.details}
-                  onChange={onChange}
-                  as="textarea"
-                />
-              </Form.Group>
-            </Fragment>
-          )}
+        { showExtended && (
+          <Fragment>
+            <Form.Group>
+              <Form.Control
+                name="transcription"
+                placeholder="Укажите транскрипцию..."
+                value={values.transcription}
+                onChange={onChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Control
+                name="details"
+                placeholder="Детали..."
+                value={values.details}
+                onChange={onChange}
+                as="textarea"
+              />
+            </Form.Group>
+          </Fragment>
+        )}
 
+        <ButtonGroup className="mr-2" aria-label="Display actions">
+          <Button onClick={onClose}>Закрыть</Button>
+        </ButtonGroup>
+
+        { showExtended && (
           <ButtonGroup className="mr-2" aria-label="Display actions">
-            <Button onClick={onClose}>Закрыть</Button>
+            <Button onClick={onSubmit}>Сохранить</Button>
           </ButtonGroup>
-
-          { showExtended && (
-            <ButtonGroup className="mr-2" aria-label="Display actions">
-              <Button onClick={onSubmit}>Сохранить</Button>
-            </ButtonGroup>
-          )}
-        </Popover.Content>
-      </StyledTermPopover>
+        )}
+      </StyledTermTranslator>
     );
 }
 
-TermPopover.propTypes = {
+TermTranslator.propTypes = {
   id: PropTypes.string.isRequired,
   setId: PropTypes.string.isRequired,
   onClose: PropTypes.func
 };
 
 
-export default TermPopover;
+export default TermTranslator;
