@@ -1,5 +1,5 @@
 import React, { useState, useContext, Fragment } from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 
 import { AuthContext } from 'context/auth';
 
@@ -9,6 +9,8 @@ function MenuBar() {
     const path = pathname === '/' ? 'home' : pathname.substr(1);
     const [activeItem, setActiveItem] = useState(path);
 
+    console.log(user);
+
     return (
         <Navbar bg="light" variant="light">
             <Navbar.Brand href="/">MOWA</Navbar.Brand>
@@ -17,7 +19,15 @@ function MenuBar() {
                 { user ? (
                     <Fragment>
                         <Nav.Link href="/sets">Наборы</Nav.Link>
-                        <Nav.Link href="/profile/add">Профили</Nav.Link>
+                        <NavDropdown title="Профили" id="profile-dropdown">
+                          {
+                            user.profiles.map(profile => (
+                              <NavDropdown.Item active={profile.active}>{profile.name}</NavDropdown.Item>
+                            ))
+                          }
+                          <NavDropdown.Divider />
+                          <NavDropdown.Item eventKey="4.4">+ добавить</NavDropdown.Item>
+                        </NavDropdown>
                         <Nav.Link onClick={logout}>Выйти</Nav.Link>
                     </Fragment>
                 ) : (
