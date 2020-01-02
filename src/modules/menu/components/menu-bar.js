@@ -3,12 +3,13 @@ import {useMutation, useQuery} from '@apollo/react-hooks';
 import { Navbar, Nav, NavDropdown, Spinner } from 'react-bootstrap';
 
 import { AuthContext } from 'context/auth';
-import { ME_QUERY, ACTIVATE_PROFILE } from "schemas/account";
+import { ME_QUERY, ACTIVATE_PROFILE, ACTIVATE_PROFILE_CLIENT, SETS_QUERY } from 'graphql/schemas/account';
 
 function MenuBar() {
     const { user, logout } = useContext(AuthContext);
     const { loading, data } = useQuery(ME_QUERY);
     const [activateProfile] = useMutation(ACTIVATE_PROFILE);
+    const [activateProfileClient] = useMutation(ACTIVATE_PROFILE_CLIENT);
     const pathname = window.location.pathname;
     const path = pathname === '/' ? 'home' : pathname.substr(1);
     const [activeItem, setActiveItem] = useState(path);
@@ -17,14 +18,11 @@ function MenuBar() {
       activateProfile({
         variables: { id },
         update(proxy) {
-          const root = proxy.readQuery({ query: ME_QUERY });
-          root.me.profiles = root.me.profiles.map(profile => {
-            profile.active = profile.id === id;
-
-            return profile;
+          activateProfileClient({
+            variables: { id }
           });
-          proxy.writeData({ query: ME_QUERY, data: root });
-        }
+        },
+        refetchQueries: () => [{ query: SETS_QUERY }]
       }).catch(err => console.log(err));
     }
 

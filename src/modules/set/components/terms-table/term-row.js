@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Overlay, Popover } from 'react-bootstrap';
 
@@ -12,11 +12,13 @@ function TermRow(props) {
 
   function displayPopover(e) {
     setShowPopover(true);
+    e.preventDefault();
     e.stopPropagation();
   }
 
   function hidePopover(e) {
     setShowPopover(false);
+    e.preventDefault();
     e.stopPropagation();
   }
 

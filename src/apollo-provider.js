@@ -6,6 +6,9 @@ import {createHttpLink} from 'apollo-link-http';
 import {ApolloProvider} from '@apollo/react-hooks';
 import {setContext} from 'apollo-link-context';
 
+import typeDefs from './graphql/typeDefs';
+import resolvers from 'graphql/resolvers';
+
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000/api'
 });
@@ -25,6 +28,8 @@ const client = new ApolloClient({
   cache: new InMemoryCache({
     dataIdFromObject: object => object.id,
   }),
+  typeDefs,
+  resolvers,
 });
 
 

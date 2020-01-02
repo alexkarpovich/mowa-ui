@@ -21,3 +21,10 @@ export const TERM_FRAGMENT = gql`
     }
   }
 `;
+
+
+export const ADD_TRANSLATION = gql`
+  mutation AddTranslation($termId: ID!, $translation: Translation!) {
+    addTranslation(termId: $termId, translation: $translation) @client
+  }
+`;

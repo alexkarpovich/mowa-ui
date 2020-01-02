@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/react-hooks';
 
 import { AuthContext } from 'context/auth';
 import { useForm } from 'util/hooks';
-import { LOGIN } from 'schemas/account';
+import { LOGIN } from 'graphql/schemas/account';
 
 
 function LoginPage(props) {

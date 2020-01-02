@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { Form, Button } from 'react-bootstrap';
 
 import { useForm } from 'util/hooks';
-import {ADD_PROFILE, ME_QUERY} from 'schemas/account';
+import { ADD_PROFILE, UNSHIFT_PROFILE } from 'graphql/schemas/account';
 
 function CreateProfileForm(props) {
   const { languages } = props;
@@ -13,13 +13,11 @@ function CreateProfileForm(props) {
     transLang: '',
     learnLang: ''
   });
-
+  const [unshiftProfile] = useMutation(UNSHIFT_PROFILE);
   const [addProfile] = useMutation(ADD_PROFILE, {
     variables: { input: values },
     update(proxy, { data: res}) {
-      const root = proxy.readQuery({ query: ME_QUERY });
-      root.me.profiles = [res.addProfile, ...root.me.profiles];
-      proxy.writeData({ query: ME_QUERY, data: root });
+      unshiftProfile({ variables: { profile: res.addProfile }});
     }
   });
 

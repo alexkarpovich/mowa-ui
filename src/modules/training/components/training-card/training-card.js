@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Spinner } from 'react-bootstrap';
 
-import { TRAINING_ITEM_QUERY, COMPLETE_ITEM, TRAINING_META_QUERY } from 'schemas/training';
+import { TRAINING_ITEM_QUERY, COMPLETE_ITEM, TRAINING_META_QUERY } from 'graphql/schemas/training';
 import { StyledTrainingCard } from "./training-card.style";
 import CardAsking from './trans-term/card-asking';
 import CardDetails from './trans-term/card-details';

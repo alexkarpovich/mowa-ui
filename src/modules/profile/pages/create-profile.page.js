@@ -2,7 +2,7 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Spinner } from 'react-bootstrap';
 
-import { LANGUAGES_QUERY } from 'schemas/language';
+import { LANGUAGES_QUERY } from 'graphql/schemas/language';
 import CreateProfileForm from '../components/create-profile/create-profile.form';
 
 function CreateProfilePage() {

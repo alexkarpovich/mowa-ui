@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useRef, useState } from 'react';
 
 export const useForm = (callback, initialState = {}) => {
   const [values, setValues] = useState(initialState);
@@ -22,4 +22,11 @@ export const useForm = (callback, initialState = {}) => {
     setValue,
     values
   };
+};
+
+export const useFocus = () => {
+  const htmlElRef = useRef(null)
+  const setFocus = () => { htmlElRef.current &&  htmlElRef.current.focus() }
+
+  return [ htmlElRef, setFocus ]
 };

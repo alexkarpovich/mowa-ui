@@ -93,3 +93,15 @@ export const ACTIVATE_PROFILE = gql`
     activateProfile(id: $id)
   }
 `;
+
+export const ACTIVATE_PROFILE_CLIENT = gql`
+  mutation ActivateProfile($id: ID!) {
+    activateProfile(id: $id) @client
+  }
+`;
+
+export const UNSHIFT_PROFILE = gql`
+  mutation UnshiftProfile($profile: Profile!) {
+    addProfile(profile: $profile) @client
+  }
+`;

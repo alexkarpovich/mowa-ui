@@ -32,6 +32,12 @@ mutation AttachTerm($id: ID!, $value: String!) {
 }
 `;
 
+export const UNSHIFT_TERM = gql`
+  mutation UnshiftTerm($setId: ID!, $term: Term!) {
+    unshiftTerm(setId: $setId, term: $term) @client
+  }
+`;
+
 export const ATTACH_TRANSLATION = gql`
   mutation AttachTranslation($input: AttachTranslationInput!) {
     attachTranslation(input: $input) {
@@ -40,6 +46,12 @@ export const ATTACH_TRANSLATION = gql`
       transcription
       details
     }
+  }
+`;
+
+export const UNSHIFT_SET = gql`
+  mutation UnshiftSet($set: Set!) {
+    unshiftSet(set: $set) @client
   }
 `;
 

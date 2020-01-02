@@ -6,8 +6,8 @@ import { Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-import { SETS_QUERY } from 'schemas/account';
-import { EDIT_SET, DELETE_SET, SET_FRAGMENT } from 'schemas/set';
+import { SETS_QUERY } from 'graphql/schemas/account';
+import { EDIT_SET, DELETE_SET, SET_FRAGMENT } from 'graphql/schemas/set';
 import { StyledNavItem } from './nav-item.style';
 
 function NavItem(props) {

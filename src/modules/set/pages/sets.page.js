@@ -1,30 +1,27 @@
 import React, { useState } from 'react';
-import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import { ListGroup, Row, Col, Spinner } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
-import { SETS_QUERY, ADD_SET } from 'schemas/account';
+import { SETS_QUERY, ADD_SET } from 'graphql/schemas/account';
 import SetView from '../components/set-view/set-view';
 import SetNavItem from '../components/nav-item/nav-item';
 import { AddSetBtn, SetSpan} from '../components/sets.style';
+import { UNSHIFT_SET } from 'graphql/schemas/set';
 
 function SetsPage() {
   const [ids, setIds] = useState([]);
   const { loading, data } = useQuery(SETS_QUERY);
-  const client = useApolloClient();
+  const [unshiftSet] = useMutation(UNSHIFT_SET);
   const [addSet] = useMutation(ADD_SET, {
     variables: { name: 'Безымянный набор' },
     update(proxy, { data: res }) {
-      const root = proxy.readQuery({ query: SETS_QUERY });
-      root.sets = [res.addSet, ...root.sets];
-      proxy.writeData({ query: SETS_QUERY, data: root });
+      unshiftSet({ variables: { set: res.addSet } });
     }
   });
 
   async function pickSelection(id, shouldAppend) {
-    await client.resetStore();
-
     setIds(shouldAppend ? [...ids, id] : [id]);
   }
 

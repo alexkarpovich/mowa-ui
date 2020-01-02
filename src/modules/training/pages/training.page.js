@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 
-import { TRAINING_META_QUERY, RESET_TRAINING } from '../../../schemas/training';
+import { TRAINING_META_QUERY, RESET_TRAINING } from '../../../graphql/schemas/training';
 import { ProgressBar, Spinner } from 'react-bootstrap';
 
 import { StyledTrainingPage } from "../components/training-page.style";

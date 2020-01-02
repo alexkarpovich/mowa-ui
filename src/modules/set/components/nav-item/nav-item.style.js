@@ -3,7 +3,7 @@ import { ListGroup } from 'react-bootstrap';
 
 export const StyledNavItem = styled(ListGroup.Item)`
   display: flex;
-  padding: 10px;
+  padding: 5px 10px;
   outline: none !important;
 
   & > .content {
