@@ -53,7 +53,7 @@ function TermTranslator(props) {
     }
 
     function handleTypeTranslation(inputValue) {
-        inputValue.length && setValue('value', inputValue);
+        setValue('value', inputValue);
     }
 
     return (
