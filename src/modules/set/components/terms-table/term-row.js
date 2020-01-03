@@ -1,9 +1,22 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Overlay, Popover } from 'react-bootstrap';
 
 import TermTranslator from "./term-translator";
 import TranslationItem from './translation-item';
+
+const UpdatingPopover = React.forwardRef(
+  ({ scheduleUpdate, children, ...props }, ref) => {
+    useEffect(() => {
+      scheduleUpdate();
+    }, [children, scheduleUpdate]);
+    return (
+      <Popover ref={ref} {...props}>
+        {children}
+      </Popover>
+    );
+  },
+);
 
 function TermRow(props) {
   const {index, setId, object} = props;
@@ -11,9 +24,11 @@ function TermRow(props) {
   const [showPopover, setShowPopover] = useState(false);
 
   function displayPopover(e) {
+    const scrollPos = { x: window.scrollX, y: window.scrollY };
     setShowPopover(true);
     e.preventDefault();
     e.stopPropagation();
+    setTimeout(() => window.scroll(scrollPos.x, scrollPos.y), 0);
   }
 
   function hidePopover(e) {
@@ -40,7 +55,7 @@ function TermRow(props) {
           placement="bottom"
           containerPadding={20}
         >
-          <Popover style={{ width: '400px' }} position="bottom">
+          <UpdatingPopover style={{ width: '400px' }} position="bottom">
             <Popover.Content>
               <TermTranslator
                 id={object.id}
@@ -48,7 +63,7 @@ function TermRow(props) {
                 onClose={hidePopover}
               />
             </Popover.Content>
-          </Popover>
+          </UpdatingPopover>
         </Overlay>
       </td>
     </tr>
