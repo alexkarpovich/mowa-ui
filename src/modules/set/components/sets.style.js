@@ -7,8 +7,9 @@ export const SetSpan = styled.span`
 
 export const AddSetBtn = styled.span`
     padding: 3px 5px;
+    color: green;
 
     &:hover {
-        color: green;
+        color: red;
     }
 `;

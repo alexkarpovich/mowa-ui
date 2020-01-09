@@ -55,8 +55,8 @@ function NavItem(props) {
             <div className="count">{`${item.count} выражений`}</div>
           </div>
           <div className="actions">
-            <FontAwesomeIcon icon={faTrash} size="sm" onClick={deleteSet}/>
-            <FontAwesomeIcon icon={faEdit} size="sm" onClick={() => setEditing(true)}/>
+            <FontAwesomeIcon icon={faTrash} size="xs" onClick={deleteSet}/>
+            <FontAwesomeIcon icon={faEdit} size="xs" onClick={() => setEditing(true)}/>
           </div>
         </Fragment>
       ) : (

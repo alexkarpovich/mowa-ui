@@ -5,7 +5,7 @@ import { TRAINING_META_QUERY, RESET_TRAINING } from '../../../graphql/schemas/tr
 import { ProgressBar, Spinner } from 'react-bootstrap';
 
 import { StyledTrainingPage } from "../components/training-page.style";
-import TrainingCard from '../components/training-card/training-card';
+import TrainingContainer from '../components/training-card/training-container';
 import TrainingBreak from '../components/training-break/training-break';
 
 function TrainingPage({ match }) {
@@ -45,7 +45,7 @@ function TrainingPage({ match }) {
               onContinue={() => setShowBreak(false)}
             />
           ) : (
-            <TrainingCard
+            <TrainingContainer
               trainingId={id}
               type={data.trainingMeta.type}
               meta={data.trainingMeta}

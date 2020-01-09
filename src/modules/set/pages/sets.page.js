@@ -26,7 +26,7 @@ function SetsPage() {
   }
 
   return (
-    <div className="selections">
+    <div className="sets">
       { loading ? (
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>

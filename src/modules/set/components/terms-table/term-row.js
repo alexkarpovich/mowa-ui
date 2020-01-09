@@ -39,7 +39,7 @@ function TermRow(props) {
 
   return (
     <tr key={index} className="term">
-      <td>{index}</td>
+      <td className="index">{index}</td>
       <td>
         <div className="value">{object.value}</div>
         <div className="transcription">{object.transcription}</div>

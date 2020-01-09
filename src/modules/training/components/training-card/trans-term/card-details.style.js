@@ -1,14 +1,14 @@
+import { Card } from 'react-bootstrap';
 import styled from 'styled-components';
 
-export const StyledCardDetails = styled.div`
+export const StyledCardDetails = styled(Card)`
+  & > .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-  & > .content {
     & > .term {
      font-size: 2em;
     }
-  }
-
-  & button {
-    text-transform: uppercase;
   }
 `;

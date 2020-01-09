@@ -7,6 +7,10 @@ export const StyledTable = styled(Table)`
   }
 
   .term {
+    .index {
+      font-size: 0.6em;
+    }
+
     .value {
       font-size: 1.4em;
     }
