@@ -1,7 +1,10 @@
 import React, { createContext, useReducer } from 'react';
+import { useQuery } from '@apollo/react-hooks';
 import jwtDecode from 'jwt-decode';
+import {ME_QUERY} from "../graphql/schemas/account";
 
 const initialState = {
+  isAuthenticated: false,
   user: null
 };
 
@@ -11,11 +14,12 @@ if (localStorage.getItem('token')) {
   if (decoded.exp * 1000 < Date.now()) {
     localStorage.removeItem('token');
   } else {
-    initialState.user = decoded;
+    initialState.isAuthenticated = true;
   }
 }
 
 const AuthContext = createContext({
+  isAuthenticated: false,
   user: null,
   login: (data) => {},
   logout: () => {}
@@ -26,11 +30,13 @@ function authReducer(state, action) {
     case 'LOGIN':
       return {
         ...state,
+        isAuthenticated: true,
         user: action.payload.user
       };
     case 'LOGOUT':
       return {
         ...state,
+        isAuthenticated: false,
         user: null
       };
     default:
@@ -40,6 +46,7 @@ function authReducer(state, action) {
 
 function AuthProvider(props) {
   const [state, dispatch] = useReducer(authReducer, initialState);
+  const { data } = useQuery(ME_QUERY, { skip: !state.isAuthenticated });
 
   function login(userData) {
     localStorage.setItem('token', userData.token);
@@ -57,7 +64,7 @@ function AuthProvider(props) {
 
   return (
     <AuthContext.Provider
-      value={{ user: state.user, login, logout }}
+      value={{ user: data ? data.me : null, login, logout }}
       {...props}
     />
   );

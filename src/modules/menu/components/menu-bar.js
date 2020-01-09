@@ -1,13 +1,13 @@
 import React, { useState, useContext, Fragment } from 'react';
-import {useMutation, useQuery} from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
+import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown, Spinner } from 'react-bootstrap';
 
 import { AuthContext } from 'context/auth';
-import { ME_QUERY, ACTIVATE_PROFILE, ACTIVATE_PROFILE_CLIENT, SETS_QUERY } from 'graphql/schemas/account';
+import { ACTIVATE_PROFILE, ACTIVATE_PROFILE_CLIENT, SETS_QUERY } from 'graphql/schemas/account';
 
 function MenuBar() {
     const { user, logout } = useContext(AuthContext);
-    const { loading, data } = useQuery(ME_QUERY);
     const [activateProfile] = useMutation(ACTIVATE_PROFILE);
     const [activateProfileClient] = useMutation(ACTIVATE_PROFILE_CLIENT);
     const pathname = window.location.pathname;
@@ -30,14 +30,14 @@ function MenuBar() {
         <Navbar bg="light" variant="light">
             <Navbar.Brand href="/">MOWA</Navbar.Brand>
             <Nav className="mr-auto" activeKey={activeItem} onSelect={key => setActiveItem(key)}>
-                <Nav.Link href="/">Home</Nav.Link>
+                <Nav.Link as={Link} to="/">Home</Nav.Link>
                 { user ? (
                     <Fragment>
-                        <Nav.Link href="/sets">Наборы</Nav.Link>
-                        { loading ? <Spinner animation="border" /> : (
+                        <Nav.Link as={Link} to="/sets">Наборы</Nav.Link>
+                        { !user ? <Spinner animation="border" /> : (
                           <NavDropdown title="Профили" id="profile-dropdown">
                             {
-                              data.me.profiles.map((profile, i) => (
+                              user.profiles.map((profile, i) => (
                                 <NavDropdown.Item
                                   key={i}
                                   active={profile.active}
@@ -48,15 +48,15 @@ function MenuBar() {
                               ))
                             }
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="/profile/add">+ добавить</NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/profile/add">+ добавить</NavDropdown.Item>
                           </NavDropdown>
                         ) }
                         <Nav.Link onClick={logout}>Выйти</Nav.Link>
                     </Fragment>
                 ) : (
                     <Fragment>
-                        <Nav.Link href="/login">Войти</Nav.Link>
-                        <Nav.Link href="/signup">Регистрация</Nav.Link>
+                        <Nav.Link as={Link} to="/login">Войти</Nav.Link>
+                        <Nav.Link as={Link} to="/signup">Регистрация</Nav.Link>
                     </Fragment>
                 )}
 
