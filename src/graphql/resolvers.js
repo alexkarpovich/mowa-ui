@@ -37,17 +37,8 @@ export default {
       let data = cache.readFragment({ id: termId, fragment: TERM_FRAGMENT });
       data.translations.push(translation);
 
-      if (translation.transcription) {
-        if (!data.transcription) {
-          data.transcription = translation.transcription;
-        } else {
-          let transcriptions = data.transcription.split(', ');
-
-          if (transcriptions.indexOf(translation.transcription) === -1) {
-            transcriptions.push(translation.transcription);
-            data.transcription = transcriptions.join(', ');
-          }
-        }
+      if (translation.transcription && data.transcriptions.indexOf(translation.transcription) === -1) {
+        data.transcriptions.push(translation.transcription);
       }
 
       cache.writeFragment({ id: termId, fragment: TERM_FRAGMENT, data });

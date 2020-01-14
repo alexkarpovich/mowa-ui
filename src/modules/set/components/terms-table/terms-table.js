@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { StyledTable } from './terms-table.style';
-import TermRow from './term-row';
+import TermPreviewRow from './term-preview-row';
 
 
 function TermsTable({ setId, terms }) {
   return (
-    <StyledTable striped bordered hover size="sm">
+    <StyledTable bordered hover size="sm">
       <thead>
       <tr>
         <th>#</th>
@@ -17,7 +17,7 @@ function TermsTable({ setId, terms }) {
       <tbody>
       {
         terms.map((term, i) => (
-          <TermRow
+          <TermPreviewRow
             key={i}
             index={terms.length - i}
             setId={setId}

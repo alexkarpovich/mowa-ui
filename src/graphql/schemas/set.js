@@ -5,7 +5,7 @@ query Terms($ids: [ID!]!) {
     terms(ids: $ids) {
         id
         value
-        transcription
+        transcriptions
         translations {
             id
             value
@@ -21,7 +21,7 @@ mutation AttachTerm($id: ID!, $value: String!) {
     attachTerm(id: $id, value: $value) {
         id
         value
-        transcription
+        transcriptions
         translations {
             id
             value

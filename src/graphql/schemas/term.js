@@ -12,7 +12,7 @@ export const TERM_FRAGMENT = gql`
   fragment anTerm on Term {
     id
     value
-    transcription
+    transcriptions
     translations {
       id
       value
