@@ -1,11 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 
 import { StyledCardDetails } from "./card-details.style";
 
 function CardDetails({ term, translation, onComplete, onRepeat }) {
   const cardRef = useRef(null);
+  const [sound] = useState(new Audio(`http://tts.baidu.com/text2audio?tex=${term.value}&cuid=dict&lan=ZH&ctp=1&pdt=30&vol=9&spd=4`));
 
   useEffect(() => {
     cardRef.current.focus();
@@ -28,6 +30,7 @@ function CardDetails({ term, translation, onComplete, onRepeat }) {
     >
       <StyledCardDetails.Body>
         <div className="term">{term.value}</div>
+        <FontAwesomeIcon icon={faVolumeUp} onClick={() => sound.play()} />
         <div className="transcription">{translation.transcription}</div>
         <div className="translation">{translation.value}</div>
         <div className="details">{translation.details}</div>
