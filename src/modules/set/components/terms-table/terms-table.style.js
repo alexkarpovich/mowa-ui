@@ -18,8 +18,18 @@ export const StyledTable = styled(Table)`
 
     .transcriptions {
       color: #9a4115;
-      font-size: 0.8em;
       white-space: nowrap;
+
+      & > button {
+        padding: 0;
+        font-size: 0.8em;
+
+        &:not(:first-child) {
+          &:before {
+            content: ", ";
+          }
+        }
+      }
     }
   }
 

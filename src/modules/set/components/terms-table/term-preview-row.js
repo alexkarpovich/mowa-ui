@@ -1,6 +1,6 @@
 import React, { Fragment, useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Overlay, Popover } from 'react-bootstrap';
+import { Button, Overlay, Popover } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
@@ -49,12 +49,18 @@ function TermPreviewRow(props) {
     <Fragment>
       <tr className="term-preview-row">
         <td className="index" onClick={toggleDetails}>
-          {index}
+          <span>{index}</span>
           <FontAwesomeIcon icon={showDetails ? faChevronUp : faChevronDown} />
         </td>
         <td>
           <div className="value">{object.value}</div>
-          <div className="transcriptions">{object.transcriptions.join(', ')}</div>
+          <div className="transcriptions">
+            {object.transcriptions.map((transc, i) => {
+              const sound = new Audio(`http://tts.baidu.com/text2audio?tex=${transc}&cuid=dict&lan=ZH&ctp=1&pdt=30&vol=9&spd=4`);
+
+              return <Button variant="link" key={i} onClick={() => sound.play()}>{transc}</Button>
+            })}
+          </div>
         </td>
         <td ref={transRef} onClick={displayPopover}>
           {object.translations.map((trans, i) => (
