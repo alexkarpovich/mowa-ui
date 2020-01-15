@@ -5,10 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
 import { SETS_QUERY, ADD_SET } from 'graphql/schemas/account';
+import { UNSHIFT_SET } from 'graphql/schemas/set';
+import { selectedSetIds } from "../utils/set.utils";
 import SetView from '../components/set-view/set-view';
 import SetNavItem from '../components/nav-item/nav-item';
 import { AddSetBtn, SetSpan} from '../components/sets.style';
-import { UNSHIFT_SET } from 'graphql/schemas/set';
 
 function SetsPage() {
   const [ids, setIds] = useState([]);
@@ -21,8 +22,14 @@ function SetsPage() {
     }
   });
 
-  async function pickSelection(id, shouldAppend) {
-    setIds(shouldAppend ? [...ids, id] : [id]);
+  async function pickSelection(id, event) {
+    if (event.shiftKey && ids.length) {
+      setIds(selectedSetIds(ids, id, data.sets));
+    } else if (event.ctrlKey) {
+      setIds([...ids, id]);
+    } else {
+      setIds([id]);
+    }
   }
 
   return (
@@ -51,7 +58,7 @@ function SetsPage() {
                         key={item.id}
                         ids={ids}
                         item={item}
-                        onClick={(event) => pickSelection(item.id, event.shiftKey)}
+                        onClick={(event) => pickSelection(item.id, event)}
                       />
                     ))
                   }
