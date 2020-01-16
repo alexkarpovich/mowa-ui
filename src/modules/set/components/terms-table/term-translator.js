@@ -2,13 +2,13 @@ import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useMutation, useQuery} from '@apollo/react-hooks';
 import {Button, ButtonGroup, Form} from 'react-bootstrap';
-import CreatableSelect from 'react-select/creatable';
 
 import {SEARCH_TRANSLATIONS_QUERY} from 'graphql/schemas/account';
 import {ATTACH_TRANSLATION} from 'graphql/schemas/set';
 import {ADD_TRANSLATION} from 'graphql/schemas/term';
 import {useForm} from 'util/hooks';
 import {StyledTermTranslator} from './term-translator.style';
+import TranslatorSelect from "./translator-select";
 
 function TermTranslator(props) {
   const {id, setId, onClose} = props;
@@ -50,7 +50,7 @@ function TermTranslator(props) {
     if (!newValue) return;
 
     if (!newValue.__isNew__) {
-      setValue('id', newValue.value);
+      setValue('id', newValue.id);
       setTimeout(onSubmit, 0);
     } else {
       setShowExtended(true);
@@ -63,15 +63,11 @@ function TermTranslator(props) {
 
   return (
     <StyledTermTranslator>
-      <CreatableSelect
-        autoFocus
-        isClearable
-        className="translation-select"
+      <TranslatorSelect
         isLoading={loading}
-        isValidNewOption={() => true}
         onChange={handleChange}
         onInputChange={handleTypeTranslation}
-        options={data ? data.searchTranslations.map(x => ({value: x.id, label: x.value})) : []}
+        options={data ? data.searchTranslations : []}
       />
 
       {showExtended && (
