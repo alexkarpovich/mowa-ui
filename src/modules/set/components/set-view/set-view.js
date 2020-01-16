@@ -2,7 +2,7 @@ import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { Button, Row, Col } from 'react-bootstrap';
+import { Button, Row, Col, Spinner } from 'react-bootstrap';
 
 import { TERMS, ATTACH_TERM, UNSHIFT_TERM } from 'graphql/schemas/set';
 import { ENSURE_TRAINING } from 'graphql/schemas/training';
@@ -14,7 +14,7 @@ function SetView({ ids }) {
   const id = ids[0];
   const history = useHistory();
   const [term, setTerm] = useState('');
-  const { data } = useQuery(TERMS, {
+  const { loading, data } = useQuery(TERMS, {
     variables: { ids },
     fetchPolicy: 'network-only',
   });
@@ -68,7 +68,15 @@ function SetView({ ids }) {
       </Row>
       <Row>
         <Col>
-          {data && <TermsTable setId={id} terms={data.terms}/>}
+          {
+            loading ? (
+              <Spinner variant="primary" animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            ) : (
+              <TermsTable setId={id} terms={data.terms} />
+            )
+          }
         </Col>
       </Row>
     </Fragment>
