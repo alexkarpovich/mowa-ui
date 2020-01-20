@@ -15,7 +15,7 @@ function CardDetails({ term, translation, onComplete, onRepeat }) {
 
   function handleKeyUp(event) {
     if (event.keyCode === 32) { /* Space keyCode */
-      if (event.ctrlKey) {
+      if (event.shiftKey) {
         onRepeat();
       } else {
         onComplete()
