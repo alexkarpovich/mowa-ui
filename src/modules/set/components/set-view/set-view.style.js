@@ -21,3 +21,4 @@ export const TrainingButtons = styled.div`
     }
   }
 `;
+

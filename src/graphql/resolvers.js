@@ -1,3 +1,4 @@
+import { findLast } from 'lodash';
 import { SET_FRAGMENT, TERMS } from './schemas/set';
 import { ME_QUERY, SETS_QUERY } from './schemas/account';
 import { TERM_FRAGMENT } from './schemas/term';
@@ -43,5 +44,10 @@ export default {
 
       cache.writeFragment({ id: termId, fragment: TERM_FRAGMENT, data });
     }
-  }
+  },
+  User: {
+    activeProfile: (parent, _args) => {
+      return findLast(parent.profiles, (profile) => profile.active);
+    },
+  },
 };

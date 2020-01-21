@@ -1,12 +1,16 @@
-import React, { Fragment, useRef, useState, useEffect } from 'react';
+import React, {Fragment, useRef, useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
 import { Button, Overlay, Popover } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
+import { speachAudio } from "util/pronounce";
+import { AuthContext } from "context/auth";
 import TermTranslator from "./term-translator";
 import TranslationItem from './translation-item';
 import TermDetailsRow from "./term-details-row";
+import { AddTranslationButton, StyledTermPreviewRow } from "./term-preview-row.style";
+
 
 const UpdatingPopover = React.forwardRef(
   ({ scheduleUpdate, children, ...props }, ref) => {
@@ -24,6 +28,7 @@ const UpdatingPopover = React.forwardRef(
 function TermPreviewRow(props) {
   const {index, setId, object} = props;
   const transRef = useRef(null);
+  const { user } = useContext(AuthContext);
   const [showDetails, setShowDetails] = useState(false);
   const [showPopover, setShowPopover] = useState(false);
 
@@ -47,7 +52,7 @@ function TermPreviewRow(props) {
 
   return (
     <Fragment>
-      <tr className="term-preview-row">
+      <StyledTermPreviewRow>
         <td className="index" onClick={toggleDetails}>
           <span>{index}</span>
           <FontAwesomeIcon icon={showDetails ? faChevronUp : faChevronDown} />
@@ -55,17 +60,23 @@ function TermPreviewRow(props) {
         <td>
           <div className="value">{object.value}</div>
           <div className="transcriptions">
-            {object.transcriptions.map((transc, i) => {
-              const sound = new Audio(`http://tts.baidu.com/text2audio?tex=${transc}&cuid=dict&lan=ZH&ctp=1&pdt=30&vol=9&spd=4`);
+            {object.transcriptions.map((transcription, i) => {
+              const audio = speachAudio({ text: transcription, language: user.activeProfile.learnLang.code });
 
-              return <Button variant="link" key={i} onClick={() => sound.play()}>{transc}</Button>
+              return <Button variant="link" key={i} onClick={() => audio.play()}>{transcription}</Button>
             })}
           </div>
         </td>
-        <td ref={transRef} onClick={displayPopover}>
+        <td ref={transRef}>
           {object.translations.map((trans, i) => (
-            <TranslationItem key={i} translation={trans}/>
+            <TranslationItem
+              key={i}
+              setId={setId}
+              translation={trans}
+            />
           ))}
+
+          <AddTranslationButton variant="link" size="sm" onClick={displayPopover}>+ добавить перевод</AddTranslationButton>
 
           <Overlay
             show={showPopover}
@@ -84,7 +95,7 @@ function TermPreviewRow(props) {
             </UpdatingPopover>
           </Overlay>
         </td>
-      </tr>
+      </StyledTermPreviewRow>
       <TermDetailsRow object={object} show={showDetails} />
     </Fragment>
   );

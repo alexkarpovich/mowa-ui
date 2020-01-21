@@ -14,6 +14,8 @@ function MenuBar() {
   const path = pathname === '/' ? 'home' : pathname.substr(1);
   const [activeItem, setActiveItem] = useState(path);
 
+  console.log(user);
+
   function activateUserProfile(id) {
     activateProfile({
       variables: {id},
@@ -32,7 +34,6 @@ function MenuBar() {
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto" activeKey={activeItem} onSelect={key => setActiveItem(key)}>
-          <Nav.Link as={Link} to="/">Home</Nav.Link>
           {user ? (
             <Fragment>
               <Nav.Link as={Link} to="/sets">Наборы</Nav.Link>

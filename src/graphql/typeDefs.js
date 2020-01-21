@@ -18,6 +18,7 @@ export default gql`
     id: ID!
     name: String!
     active: Boolean
+    learnLang: Language
   }
 
   input Translation {

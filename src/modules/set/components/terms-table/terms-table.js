@@ -6,7 +6,7 @@ import TermPreviewRow from './term-preview-row';
 
 function TermsTable({ setId, terms }) {
   return (
-    <StyledTable bordered hover size="sm">
+    <StyledTable bordered size="sm">
       <thead>
       <tr>
         <th>#</th>

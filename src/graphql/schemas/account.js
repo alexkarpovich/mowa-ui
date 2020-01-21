@@ -21,10 +21,14 @@ export const ME_QUERY = gql`
     me {
       id
       email
+      activeProfile @client
       profiles {
         id
         name
         active
+        learnLang {
+          code
+        }
       }
     }
   }
@@ -66,6 +70,9 @@ export const ADD_PROFILE = gql`
     addProfile(input: $input) {
       id
       name
+      learnLang {
+        code
+      }
     }
   }
 `;
