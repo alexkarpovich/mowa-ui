@@ -43,7 +43,13 @@ export default {
       }
 
       cache.writeFragment({ id: termId, fragment: TERM_FRAGMENT, data });
-    }
+    },
+    detachTranslation: (_, { termId, translationId }, { cache }) => {
+      let data = cache.readFragment({ id: termId, fragment: TERM_FRAGMENT });
+
+      data.translations = data.translations.filter(item => item.id !== translationId);
+      cache.writeFragment({ id: termId, fragment: TERM_FRAGMENT, data });
+    },
   },
   User: {
     activeProfile: (parent, _args) => {

@@ -34,5 +34,6 @@ export default gql`
     activateProfile(id: ID!) : Boolean
     unshiftSet(set: Set!) : Boolean
     addTranslation(termId: ID!, translation: Translation!) : Boolean
+    detachTranslation(termId: ID!, translationId: ID!) : Boolean
   }
 `;

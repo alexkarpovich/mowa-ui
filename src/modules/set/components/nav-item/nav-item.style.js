@@ -11,11 +11,13 @@ export const StyledNavItem = styled(ListGroup.Item)`
     width: 100%;
 
     & > .name {
+      font-size: 0.8em;
       font-weight: bold;
     }
 
     & > .count {
-      font-size: 0.7em;
+      font-size: 0.6em;
+      font-style: italic;
     }
   }
 

@@ -28,3 +28,9 @@ export const ADD_TRANSLATION = gql`
     addTranslation(termId: $termId, translation: $translation) @client
   }
 `;
+
+export const DETACH_TRANSLATION_CLIENT = gql`
+  mutation DetachTranslation($termId: ID!, $translationId: ID!) {
+    detachTranslation(termId: $termId, translationId: $translationId) @client
+  }
+`;

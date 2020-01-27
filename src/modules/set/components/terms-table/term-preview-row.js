@@ -72,6 +72,7 @@ function TermPreviewRow(props) {
             <TranslationItem
               key={i}
               setId={setId}
+              termId={object.id}
               translation={trans}
             />
           ))}

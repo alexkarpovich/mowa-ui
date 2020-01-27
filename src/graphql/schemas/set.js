@@ -50,7 +50,7 @@ export const ATTACH_TRANSLATION = gql`
 `;
 
 export const DETACH_TRANSLATION = gql`
-  mutation DetachTranslation($setId: ID!, $translationId: ID) {
+  mutation DetachTranslation($setId: ID!, $translationId: ID!) {
     detachTranslation(setId: $setId, translationId: $translationId)
   }
 `;

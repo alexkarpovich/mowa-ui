@@ -10,7 +10,7 @@ import typeDefs from './graphql/typeDefs';
 import resolvers from 'graphql/resolvers';
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000/api'
+  uri: `http://${process.env.REACT_APP_HOST_IP}:4000/api`
 });
 
 const authLink = setContext(() => {
