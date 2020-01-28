@@ -9,6 +9,7 @@ export const StyledTermPreviewRow = styled.tr`
 
   .value {
     font-size: 1.4em;
+    font-family: KaiTi;
   }
 
   .transcriptions {

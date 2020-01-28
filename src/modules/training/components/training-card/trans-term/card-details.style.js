@@ -9,6 +9,7 @@ export const StyledCardDetails = styled(Card)`
 
     & > .term {
      font-size: 2em;
+     font-family: KaiTi;
     }
   }
 `;
