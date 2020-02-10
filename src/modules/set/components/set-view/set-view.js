@@ -60,9 +60,14 @@ function SetView({ ids }) {
           )}
 
           <TrainingButtons>
-            <Button variant="primary" onClick={() => startTraining(0)}>I</Button>
-            <Button variant="primary">II</Button>
-            <Button variant="primary">III</Button>
+            { [0, 1].map(type => (
+              <Button
+                key={type}
+                variant="primary"
+                onClick={() => startTraining(type)}>
+                {type}
+              </Button>
+            ))}
           </TrainingButtons>
         </Col>
       </Row>
