@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 
-const TTS_URL = 'http://tts.baidu.com/text2audio';
+const TTS_URL = 'https://tts.baidu.com/text2audio';
 
 export const speachAudio = ({ text, language, cuid, ctp, pdt, vol, spd }) => {
   const params = {
