@@ -10,7 +10,7 @@ import typeDefs from './graphql/typeDefs';
 import resolvers from 'graphql/resolvers';
 
 const httpLink = createHttpLink({
-  uri: `https://api.mowa.local/graphql`
+  uri: `https://api.mowy.xyz/graphql`
 });
 
 const authLink = setContext(() => {
