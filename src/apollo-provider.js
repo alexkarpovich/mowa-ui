@@ -10,7 +10,7 @@ import typeDefs from './graphql/typeDefs';
 import resolvers from 'graphql/resolvers';
 
 const httpLink = createHttpLink({
-  uri: `https://api.mowy.xyz/graphql`
+  uri: process.env.REACT_APP_GRAPHQL_URL,
 });
 
 const authLink = setContext(() => {

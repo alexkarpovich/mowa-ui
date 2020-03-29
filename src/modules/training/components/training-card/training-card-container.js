@@ -5,11 +5,11 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Spinner } from 'react-bootstrap';
 
 import { TRAINING_ITEM_QUERY, COMPLETE_ITEM, TRAINING_META_QUERY } from 'graphql/schemas/training';
-import { StyledTrainingContainer } from "./training-container.style";
+import { StyledTrainingCardContainer } from "./training-card-container.style";
 import CardAsking from './trans-term/card-asking';
 import CardDetails from './trans-term/card-details';
 
-function TrainingContainer({ trainingId }) {
+function TrainingCardContainer({ trainingId }) {
   const { loading, data, refetch } = useQuery(TRAINING_ITEM_QUERY, {
     variables: { id: trainingId }
   });
@@ -38,7 +38,7 @@ function TrainingContainer({ trainingId }) {
   }
 
   return (
-    <StyledTrainingContainer>
+    <StyledTrainingCardContainer>
       { loading ? (
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
@@ -61,13 +61,13 @@ function TrainingContainer({ trainingId }) {
           ) }
         </Fragment>
       ) }
-    </StyledTrainingContainer>
+    </StyledTrainingCardContainer>
   );
 }
 
-TrainingContainer.propTypes = {
+TrainingCardContainer.propTypes = {
   trainingId: PropTypes.string.isRequired,
   type: PropTypes.number.isRequired,
 };
 
-export default TrainingContainer;
+export default TrainingCardContainer;

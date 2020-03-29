@@ -6,6 +6,11 @@ export const TRAINING_META_QUERY = gql`
       type
       total
       complete
+      stages {
+        id
+        cycles
+        complete
+      }
     }
   }
 `;
