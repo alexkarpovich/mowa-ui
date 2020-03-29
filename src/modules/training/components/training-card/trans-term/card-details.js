@@ -2,8 +2,17 @@ import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVolumeUp } from '@fortawesome/free-solid-svg-icons';
+import { Swipeable } from 'react-swipeable'
 
 import { StyledCardDetails } from "./card-details.style";
+
+const swipeConfig = {
+  delta: 10,                             // min distance(px) before a swipe starts
+  preventDefaultTouchmoveEvent: false,   // preventDefault on touchmove, *See Details*
+  trackTouch: true,                      // track touch input
+  trackMouse: true,                     // track mouse input
+  rotationAngle: 0,                      // set a rotation angle
+};
 
 function CardDetails({ term, translation, onComplete, onRepeat }) {
   const cardRef = useRef(null);
@@ -22,20 +31,27 @@ function CardDetails({ term, translation, onComplete, onRepeat }) {
       }
     }
   }
+
   return (
-    <StyledCardDetails
-      tabIndex={-1}
-      ref={cardRef}
-      onKeyUp={handleKeyUp}
+    <Swipeable
+      onSwipedUp={onComplete}
+      onSwipedDown={onRepeat}
+      {...swipeConfig}
     >
-      <StyledCardDetails.Body>
-        <div className="term">{term.value}</div>
-        <FontAwesomeIcon icon={faVolumeUp} onClick={() => sound.play()} />
-        <div className="transcription">{translation.transcription}</div>
-        <div className="translation">{translation.value}</div>
-        <div className="details">{translation.details}</div>
-      </StyledCardDetails.Body>
-    </StyledCardDetails>
+      <StyledCardDetails
+        tabIndex={-1}
+        ref={cardRef}
+        onKeyUp={handleKeyUp}
+      >
+        <StyledCardDetails.Body>
+          <div className="term">{term.value}</div>
+          <FontAwesomeIcon icon={faVolumeUp} onClick={() => sound.play()} />
+          <div className="transcription">{translation.transcription}</div>
+          <div className="translation">{translation.value}</div>
+          <div className="details">{translation.details}</div>
+        </StyledCardDetails.Body>
+      </StyledCardDetails>
+    </Swipeable>
   );
 }
 
