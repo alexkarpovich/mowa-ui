@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVolumeUp } from '@fortawesome/free-solid-svg-icons';
@@ -15,15 +15,18 @@ const swipeConfig = {
 };
 
 function CardDetails({ term, translation, onComplete, onRepeat }) {
-  const cardRef = useRef(null);
   const [sound] = useState(new Audio(`http://tts.baidu.com/text2audio?tex=${term.value}&cuid=dict&lan=ZH&ctp=1&pdt=30&vol=9&spd=4`));
 
   useEffect(() => {
-    cardRef.current.focus();
-  }, [cardRef]);
+    document.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      document.removeEventListener('keyup', handleKeyUp);
+    };
+  });
 
   function handleKeyUp(event) {
-    if (event.keyCode === 32) { /* Space keyCode */
+    if (event.code === 'Space') {
       if (event.shiftKey) {
         onRepeat();
       } else {
@@ -32,17 +35,27 @@ function CardDetails({ term, translation, onComplete, onRepeat }) {
     }
   }
 
+  function onCompleteHandler(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    onComplete();
+  }
+
+  function onRepeatHandler(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    onRepeat();
+  }
+
   return (
     <Swipeable
-      onSwipedUp={onComplete}
-      onSwipedDown={onRepeat}
+      onSwipedUp={onCompleteHandler}
+      onSwipedDown={onRepeatHandler}
       {...swipeConfig}
     >
-      <StyledCardDetails
-        tabIndex={-1}
-        ref={cardRef}
-        onKeyUp={handleKeyUp}
-      >
+      <StyledCardDetails onKeyUp={handleKeyUp}>
         <StyledCardDetails.Body>
           <div className="term">{term.value}</div>
           <FontAwesomeIcon icon={faVolumeUp} onClick={() => sound.play()} />

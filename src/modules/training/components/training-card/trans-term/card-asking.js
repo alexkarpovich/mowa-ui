@@ -1,26 +1,24 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { StyledCardAsking } from "./card-asking.style";
 
 function CardAsking({ translation, onShow }) {
-  const cardRef = useRef(null);
 
   useEffect(() => {
-    cardRef.current.focus();
-  }, [cardRef]);
+    document.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      document.removeEventListener('keyup', handleKeyUp);
+    };
+  });
 
   function handleKeyUp(event) {
-    event.keyCode === 32 && onShow();
+    event.code === 'Space' && onShow();
   }
 
   return (
-    <StyledCardAsking
-      tabIndex={-1}
-      ref={cardRef}
-      onClick={onShow}
-      onKeyUp={handleKeyUp}
-    >
+    <StyledCardAsking onClick={onShow}>
       <StyledCardAsking.Body>
         <div className="content">
           <div className="translation">{translation.value}</div>
