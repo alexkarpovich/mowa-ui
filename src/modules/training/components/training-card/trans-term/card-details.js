@@ -35,16 +35,14 @@ function CardDetails({ term, translation, onComplete, onRepeat }) {
     }
   }
 
-  function onCompleteHandler(e) {
-    e.preventDefault();
-    e.stopPropagation();
+  function onCompleteHandler({ event }) {
+    event.preventDefault();
 
     onComplete();
   }
 
-  function onRepeatHandler(e) {
-    e.preventDefault();
-    e.stopPropagation();
+  function onRepeatHandler({ event }) {
+    event.preventDefault();
 
     onRepeat();
   }
