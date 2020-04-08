@@ -1,70 +1,36 @@
 import React, { useState } from 'react';
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import { ListGroup, Row, Col } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { useQuery } from '@apollo/react-hooks';
+import { Row, Col } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
 
-import { SETS_QUERY, ADD_SET } from 'graphql/schemas/account';
-import { UNSHIFT_SET } from 'graphql/schemas/set';
+import { SETS_QUERY } from 'graphql/schemas/account';
 import { selectedSetIds } from "../utils/set.utils";
 import SetView from '../components/set-view/set-view';
-import SetNavItem from '../components/nav-item/nav-item';
-import { AddSetBtn, SetSpan} from '../components/sets.style';
+import SetNav from "../components/set-nav/set-nav";
 
 function SetsPage() {
   const [ids, setIds] = useState([]);
   const { loading, data } = useQuery(SETS_QUERY);
-  const [unshiftSet] = useMutation(UNSHIFT_SET);
-  const [addSet] = useMutation(ADD_SET, {
-    variables: { name: 'Безымянный набор' },
-    update(proxy, { data: res }) {
-      unshiftSet({ variables: { set: res.addSet } });
-    }
-  });
+  const query = queryString.parse(useLocation().search, { arrayFormat: 'bracket' });
 
-  async function pickSelection(id, event) {
-    if (event.shiftKey && ids.length) {
-      setIds(selectedSetIds(ids, id, data.sets));
-    } else if (event.ctrlKey) {
-      setIds([...ids, id]);
-    } else {
-      setIds([id]);
-    }
-  }
+  console.log(query);
 
   return (
     <div className="sets">
       <Row>
         <Col sm={3}>
-          <Row>
-            <Col>
-              <SetSpan>Наборы</SetSpan>
-              <AddSetBtn>
-                <FontAwesomeIcon icon={faPlusCircle} onClick={addSet}/>
-              </AddSetBtn>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <ListGroup>
-                {
-                  !loading && data.sets.map((item) => (
-                    <SetNavItem
-                      key={item.id}
-                      ids={ids}
-                      item={item}
-                      onClick={(event) => pickSelection(item.id, event)}
-                    />
-                  ))
-                }
-              </ListGroup>
-            </Col>
-          </Row>
-
+          { data && (
+            <SetNav
+              sets={data.sets}
+              active={query.ids || []}
+            />
+            )
+          }
         </Col>
         <Col sm={9}>
-          { ids.length ? (
-            <SetView ids={ids} />
+          { query.ids && query.ids.length ? (
+            <SetView ids={query.ids} />
           ) : (
             <div>
               Выберите набор.

@@ -19,14 +19,14 @@ function App() {
     <AuthProvider>
       <Router basename='/'>
         <MenuBar />
-        <Container>
+        <div>
           <Route exact path="/" component={HomePage} />
           <Route path='/profile/add' component={CreateProfilePage} />
           <Route path='/sets' component={SetsPage} />
           <Route path='/training/:id' component={TrainingPage} />
           <AuthRoute exact path="/signup" component={SignupPage} />
           <AuthRoute exact path="/login" component={LoginPage} />
-        </Container>
+        </div>
       </Router>
     </AuthProvider>
   );

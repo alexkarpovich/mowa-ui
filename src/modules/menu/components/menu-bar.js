@@ -14,8 +14,6 @@ function MenuBar() {
   const path = pathname === '/' ? 'home' : pathname.substr(1);
   const [activeItem, setActiveItem] = useState(path);
 
-  console.log(user);
-
   function activateUserProfile(id) {
     activateProfile({
       variables: {id},
@@ -36,7 +34,7 @@ function MenuBar() {
         <Nav className="mr-auto" activeKey={activeItem} onSelect={key => setActiveItem(key)}>
           {user ? (
             <Fragment>
-              <Nav.Link as={Link} to="/sets">Наборы</Nav.Link>
+              <Nav.Link as={Link} to="/sets">Обзор</Nav.Link>
               {!user ? <Spinner animation="border"/> : (
                 <NavDropdown title="Профили" id="profile-dropdown">
                   {
