@@ -5,9 +5,10 @@ import { useHistory } from "react-router-dom";
 import { useMutation } from "@apollo/react-hooks";
 import queryString from 'query-string';
 
+import { randomString } from '../../utils/set.utils';
 import { MODE_VIEW, MODE_SELECT } from "./set-nav.const";
 import { ADD_SET } from 'graphql/schemas/account';
-import { UNSHIFT_SET } from 'graphql/schemas/set';
+import { CLONE_SET, UNSHIFT_SET } from 'graphql/schemas/set';
 import { StyledSetNav } from "./set-nav.style";
 import NavItem from "./nav-item";
 
@@ -18,9 +19,22 @@ function SetNav({ sets, active }) {
 
   const [unshiftSet] = useMutation(UNSHIFT_SET);
   const [addSet] = useMutation(ADD_SET, {
-    variables: { name: Math.random().toString(36).substring(2, 15) },
+    variables: { name: randomString() },
     update(proxy, { data: res }) {
       unshiftSet({ variables: { set: res.addSet } });
+    }
+  });
+  const [cloneSet] = useMutation(CLONE_SET, {
+    variables: { ids: selected, name: randomString() },
+    update(proxy, { data: res }) {
+      unshiftSet({ variables: { set: res.cloneSet } });
+
+      setMode(MODE_VIEW);
+
+      history.push({
+        path: '/sets',
+        search: queryString.stringify({ ids: [res.cloneSet.id] }, { arrayFormat: 'bracket' })
+      });
     }
   });
 
@@ -77,6 +91,7 @@ function SetNav({ sets, active }) {
           <Fragment>
             <Button variant="link" onClick={selectAll}>все</Button>
             <Button variant="link" onClick={viewSelected}>показать</Button>
+            <Button variant="link" onClick={cloneSet}>клон</Button>
             <Button variant="link" onClick={() => {}}>удалить</Button>
           </Fragment>
         ) }

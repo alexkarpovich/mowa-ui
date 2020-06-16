@@ -67,6 +67,16 @@ export const EDIT_SET = gql`
   }
 `;
 
+export const CLONE_SET = gql`
+  mutation CloneSet($ids: [ID!], $name: String!) {
+    cloneSet(ids: $ids, name: $name) {
+      id
+      name
+      count
+    }
+  }
+`;
+
 export const DELETE_SET = gql`
 mutation DeleteSet($id: ID!) {
     deleteSet(id: $id)

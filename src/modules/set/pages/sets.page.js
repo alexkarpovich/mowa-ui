@@ -6,6 +6,7 @@ import queryString from 'query-string';
 
 import { SETS_QUERY } from 'graphql/schemas/account';
 import { selectedSetIds } from "../utils/set.utils";
+import { StyledSetsPage } from '../components/sets.style';
 import SetView from '../components/set-view/set-view';
 import SetNav from "../components/set-nav/set-nav";
 
@@ -17,28 +18,25 @@ function SetsPage() {
   console.log(query);
 
   return (
-    <div className="sets">
-      <Row>
-        <Col sm={3}>
-          { data && (
-            <SetNav
-              sets={data.sets}
-              active={query.ids || []}
-            />
-            )
-          }
-        </Col>
-        <Col sm={9}>
-          { query.ids && query.ids.length ? (
-            <SetView ids={query.ids} />
-          ) : (
-            <div>
-              Выберите набор.
-            </div>
-          ) }
-        </Col>
-      </Row>
-    </div>
+    <StyledSetsPage className="sets">
+      <div className="set-nav-container">
+        { data && (
+          <SetNav
+            sets={data.sets}
+            active={query.ids || []}
+          />
+        ) }
+      </div>
+      <div className="set-view-container">
+        { query.ids && query.ids.length ? (
+          <SetView ids={query.ids} />
+        ) : (
+          <div>
+            Выберите набор.
+          </div>
+        ) }
+      </div>
+    </StyledSetsPage>
   );
 }
 

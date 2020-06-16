@@ -27,7 +27,7 @@ function MenuBar() {
   }
 
   return (
-    <Navbar collapseOnSelect expand="md" bg="light" variant="light">
+    <Navbar collapseOnSelect fixed="top" expand="md" bg="light" variant="light">
       <Navbar.Brand href="/">MOWA</Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">

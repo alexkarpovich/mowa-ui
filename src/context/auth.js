@@ -1,7 +1,7 @@
 import React, { createContext, useReducer } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import jwtDecode from 'jwt-decode';
-import {ME_QUERY} from "../graphql/schemas/account";
+import { ME_QUERY } from "../graphql/schemas/account";
 
 const initialState = {
   isAuthenticated: false,
