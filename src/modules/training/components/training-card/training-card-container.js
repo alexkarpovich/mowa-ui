@@ -2,14 +2,14 @@ import cloneDeep from 'lodash/cloneDeep';
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { Spinner } from 'react-bootstrap';
+import { Spinner, ProgressBar } from 'react-bootstrap';
 
 import { TRAINING_ITEM_QUERY, COMPLETE_ITEM, TRAINING_META_QUERY } from 'graphql/schemas/training';
 import { StyledTrainingCardContainer } from "./training-card-container.style";
 import CardAsking from './trans-term/card-asking';
 import CardDetails from './trans-term/card-details';
 
-function TrainingCardContainer({ trainingId }) {
+function TrainingCardContainer({ trainingId, meta }) {
   const { loading, data, refetch } = useQuery(TRAINING_ITEM_QUERY, {
     variables: { id: trainingId }
   });
@@ -39,6 +39,11 @@ function TrainingCardContainer({ trainingId }) {
 
   return (
     <StyledTrainingCardContainer>
+      <div className="progress-container">
+        <ProgressBar variant="info" now={meta.complete / meta.total * 100} />
+        { meta.type === 1 && <ProgressBar variant="warning" now={((meta.complete / (meta.total / meta.stages.length)) % 1) * 100 } /> }
+      </div>
+
       { loading ? (
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>

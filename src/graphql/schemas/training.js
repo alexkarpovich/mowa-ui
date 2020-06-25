@@ -15,6 +15,21 @@ export const TRAINING_META_QUERY = gql`
   }
 `;
 
+export const TRAINING_META_CLIENT_QUERY = gql`
+  query TrainingMetaClientQuery($id: ID!) {
+    trainingMeta(id: $id) @client {
+      type
+      total
+      complete
+      stages {
+        id
+        cycles
+        complete
+      }
+    }
+  }
+`;
+
 export const TRAINING_ITEM_QUERY = gql`
   query TrainingItemQuery($id: ID!) {
     trainingItem(id: $id) {

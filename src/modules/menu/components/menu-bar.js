@@ -28,7 +28,7 @@ function MenuBar() {
 
   return (
     <Navbar collapseOnSelect fixed="top" expand="md" bg="light" variant="light">
-      <Navbar.Brand href="/">MOWA</Navbar.Brand>
+      <Navbar.Brand href="/">MOWY</Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto" activeKey={activeItem} onSelect={key => setActiveItem(key)}>
@@ -51,7 +51,7 @@ function MenuBar() {
                   <NavDropdown.Divider/>
                   <NavDropdown.Item as={Link} to="/profile/add">+ добавить</NavDropdown.Item>
                 </NavDropdown>
-              )}
+              )}              
               <Nav.Link onClick={logout}>Выйти</Nav.Link>
             </Fragment>
           ) : (
@@ -62,7 +62,7 @@ function MenuBar() {
           )}
 
         </Nav>
-      </Navbar.Collapse>
+      </Navbar.Collapse>      
     </Navbar>
   );
 }
