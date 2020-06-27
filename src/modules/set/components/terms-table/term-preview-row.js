@@ -50,6 +50,11 @@ function TermPreviewRow(props) {
     e.stopPropagation();
   }
 
+  function playTranscription(text) {
+    const audio = speachAudio({ text, language: user.activeProfile.learnLang.code }); 
+    audio.play(); 
+  }
+
   return (
     <Fragment>
       <StyledTermPreviewRow>
@@ -61,9 +66,7 @@ function TermPreviewRow(props) {
           <div className="value">{object.value}</div>
           <div className="transcriptions">
             {object.transcriptions.map((transcription, i) => {
-              const audio = speachAudio({ text: transcription, language: user.activeProfile.learnLang.code });
-
-              return <Button variant="link" key={i} onClick={() => audio.play()}>{transcription}</Button>
+              return <Button variant="link" key={i} onClick={() => playTranscription(transcription)}>{transcription}</Button>
             })}
           </div>
         </td>

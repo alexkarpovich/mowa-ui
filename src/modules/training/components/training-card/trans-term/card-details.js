@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import { Swipeable } from 'react-swipeable'
 
+import { AuthContext } from 'context/auth';
+import { speachAudio } from 'util/pronounce';
 import { StyledCardDetails } from "./card-details.style";
 
 const swipeConfig = {
@@ -15,7 +17,7 @@ const swipeConfig = {
 };
 
 function CardDetails({ term, translation, onComplete, onRepeat }) {
-  const [sound] = useState(new Audio(`http://tts.baidu.com/text2audio?tex=${term.value}&cuid=dict&lan=ZH&ctp=1&pdt=30&vol=9&spd=4`));
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     document.addEventListener('keyup', handleKeyUp);
@@ -47,6 +49,11 @@ function CardDetails({ term, translation, onComplete, onRepeat }) {
     onRepeat();
   }
 
+  function playTranscription(text) {
+    const audio = speachAudio({ text, language: user.activeProfile.learnLang.code }); 
+    audio.play(); 
+  }
+
   return (
     <Swipeable
       onSwipedUp={onCompleteHandler}
@@ -56,7 +63,7 @@ function CardDetails({ term, translation, onComplete, onRepeat }) {
       <StyledCardDetails onKeyUp={handleKeyUp}>
         <StyledCardDetails.Body>
           <div className="term">{term.value}</div>
-          <FontAwesomeIcon icon={faVolumeUp} onClick={() => sound.play()} />
+          <FontAwesomeIcon icon={faVolumeUp} onClick={() => playTranscription(translation.transcription)} />
           <div className="transcription">{translation.transcription}</div>
           <div className="translation">{translation.value}</div>
           <div className="details">{translation.details}</div>
